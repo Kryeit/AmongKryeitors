@@ -1,0 +1,8 @@
+name: AmongKryeitors
+version: '${version}'
+main: com.kryeit.AmongKryeitors
+api-version: 1.18
+commands:
+  startgame:
+    description: Starts the Among Us game
+    permission: amongkryeitors.startgame
