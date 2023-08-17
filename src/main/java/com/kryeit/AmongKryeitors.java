@@ -1,6 +1,7 @@
 package com.kryeit;
 
 import com.kryeit.command.StartGame;
+import com.kryeit.listener.OnPlayerAttack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public final class AmongKryeitors extends JavaPlugin {
     @Override
     public void onEnable() {
         registerComamnds();
+        registerEvents();
 
     }
 
@@ -25,5 +27,9 @@ public final class AmongKryeitors extends JavaPlugin {
 
     public void registerComamnds() {
         getCommand("startgame").setExecutor(new StartGame());
+    }
+
+    public void registerEvents() {
+        getServer().getPluginManager().registerEvents(new OnPlayerAttack(), this);
     }
 }
