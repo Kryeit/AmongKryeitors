@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,7 +64,7 @@ public class onTaskDone implements Listener{
         String finaldrain = xdrain + " " + ydrain + " " + zdrain;
         if (finaldrain.equals("1844 10 -4349") || finaldrain.equals("1844 10 -4398")) {
             if (Objects.requireNonNull(event.getItem()).toString().equals("ItemStack{CREATE_ENCHANTMENT_INDUSTRY_INK_BUCKET x 1}")) {
-                System.out.println("Bucket has been emptied");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a title {\"text\":\"TASK COMPLETE!\",\"color\":\"dark_green\"}");
             }
         }
     }
@@ -75,16 +76,22 @@ public class onTaskDone implements Listener{
         String finaldrain = xspout + " " + yspout + " " + zspout;
         if(finaldrain.equals("1795 10 -4398")) {
             if(Objects.requireNonNull(event.getItem()).toString().equals("ItemStack{BUCKET x 1}")) {
-                System.out.println("Bucket has been filled");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a title {\"text\":\"TASK COMPLETE!\",\"color\":\"dark_green\"}");
             }
         }
     }
+    List<String> datas = List.of("1772 11 -4346",
+            "1758 11 -4342",
+            "1734 11 -4365",
+            "1776 11 -4400",
+            "1846 11 -4380");
     @EventHandler
-    public void OnDataDownloaded (InventoryClickEvent event) {
-        System.out.println(event.getCurrentItem());
-        System.out.println(event.getClickedInventory());
-        if (Objects.requireNonNull(event.getCurrentItem()).toString().equals("ItemStack{MINECRAFT_WRITTEN_BOOK x 1}")){
-            System.out.println("Written book clicked");
+    public void OnDataDownloaded (PlayerInteractEvent event) {
+        String position = event.getClickedBlock().getLocation().getBlockX() + " " + event.getClickedBlock().getLocation().getBlockY() + " " + event.getClickedBlock().getLocation().getBlockZ();
+        if (datas.contains(position)) {
+            if (Objects.requireNonNull(event.getItem()).toString().contains("ItemStack{WRITTEN_BOOK x 1")) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a title {\"text\":\"TASK COMPLETE!\",\"color\":\"dark_green\"}");
+            }
         }
     }
 }
