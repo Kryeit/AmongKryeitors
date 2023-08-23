@@ -12,6 +12,7 @@ public class ClaimUtils {
     private static final UUID claimUUID = UUID.fromString("example");
 
     public static boolean isInside(Player player) {
-        return core.getClaimAt(player.getLocation()).getUniqueId().equals(claimUUID);
+        //return core.getClaimAt(player.getLocation()).getUniqueId().equals(claimUUID);
+        return true;
     }
 }
