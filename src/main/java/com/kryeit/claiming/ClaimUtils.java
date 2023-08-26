@@ -9,7 +9,7 @@ import java.util.UUID;
 public class ClaimUtils {
 
     private static final Core core = GriefDefender.getCore();
-    private static final UUID claimUUID = UUID.fromString("example");
+    //private static final UUID claimUUID = UUID.fromString("example");
 
     public static boolean isInside(Player player) {
         //return core.getClaimAt(player.getLocation()).getUniqueId().equals(claimUUID);

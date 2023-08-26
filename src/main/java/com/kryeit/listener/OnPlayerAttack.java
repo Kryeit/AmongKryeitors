@@ -38,9 +38,8 @@ public class OnPlayerAttack implements Listener {
     }
 }
 
-//TODO : Make the GUI for sabotage, wich will include reactor sabotage, light sabotage and oxygen sabotage
+
 //TODO : Make a task giving system that gives tasks randomly to each player.
-//TODO : Make a way to see when a certain player completes a certain task
 //TODO : Make the basics for each event listed in the odt file
 //TODO : Make a vote GUI to vote
 //TODO : Make the system that manages players, who is what and who is dead, etc...

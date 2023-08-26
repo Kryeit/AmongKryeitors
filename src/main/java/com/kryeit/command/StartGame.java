@@ -7,23 +7,26 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class StartGame implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        List<Player> playersInGame = new ArrayList<>();
         int impostorAmount;
-
+        List<Player> playersInGame = new ArrayList<>();
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (ClaimUtils.isInside(p)) playersInGame.add(p);
         }
 
-        if (playersInGame.size() < 3) return false;
-
+        if (playersInGame.size() < 3) {
+            AmongKryeitors.crewmates.add(playersInGame.get(0).getUniqueId());
+            System.out.println(AmongKryeitors.crewmates);
+        }
         if (playersInGame.size() <= 5) {
             impostorAmount = 1;
         } else if (playersInGame.size() <= 8) {

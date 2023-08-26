@@ -6,3 +6,5 @@ commands:
   startgame:
     description: Starts the Among Us game
     permission: amongkryeitors.startgame
+  sabotage :
+    description: Shows the options of a sabotage
