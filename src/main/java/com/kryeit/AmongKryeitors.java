@@ -2,10 +2,7 @@ package com.kryeit;
 
 import com.kryeit.command.Sabotage;
 import com.kryeit.command.StartGame;
-import com.kryeit.listener.GUIPreventCLicking;
-import com.kryeit.listener.OnPlayerAttack;
-import com.kryeit.listener.onPlayerDeath;
-import com.kryeit.listener.onTaskDone;
+import com.kryeit.listener.*;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,11 +16,19 @@ public final class AmongKryeitors extends JavaPlugin {
 
     public static List<UUID> impostors = new ArrayList<>();
     public static List<UUID> crewmates = new ArrayList<>();
+    public static List<Player> currentDead = new ArrayList<>();
+    public static List<String> corpses = new ArrayList<>();
+
+    public static World OVERWORLD = Bukkit.getWorld("world");
     private static AmongKryeitors instance;
 
-    public static List<Player> currentDead = new ArrayList<>();
+    public static String current_pin;
+    public static String current_pin2;
 
-    public static List<String> bodies = new ArrayList<>();
+    public static Boolean is_otwo_sabotaged = false;
+
+    public static Boolean is_reactor_sabotaged = false;
+
 
     @Override
     public void onEnable() {
@@ -47,9 +52,17 @@ public final class AmongKryeitors extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnPlayerAttack(), this);
         getServer().getPluginManager().registerEvents(new onPlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new onTaskDone(), this);
-        getServer().getPluginManager().registerEvents(new GUIPreventCLicking(), this);
+        getServer().getPluginManager().registerEvents(new SabotageGUI(), this);
+        getServer().getPluginManager().registerEvents(new LightsGUI(), this);
+        getServer().getPluginManager().registerEvents(new OxygenAdminGUI(), this);
+        getServer().getPluginManager().registerEvents(new OxygenO2GUI(), this);
     }
-    public static AmongKryeitors getInstance() {return instance;}
+
+    public static AmongKryeitors getInstance() {
+        return instance;
+    }
+
+
 
 }
 

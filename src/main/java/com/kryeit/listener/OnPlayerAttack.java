@@ -40,9 +40,6 @@ public class OnPlayerAttack implements Listener {
 
 
 //TODO : Make a task giving system that gives tasks randomly to each player.
-//TODO : Make the basics for each event listed in the odt file
 //TODO : Make a vote GUI to vote
 //TODO : Make the system that manages players, who is what and who is dead, etc...
-//TODO : Make the startgame and endgame logic
-//TODO : Make a diagram representing the different event logic and the order it will server as gamemaster
 

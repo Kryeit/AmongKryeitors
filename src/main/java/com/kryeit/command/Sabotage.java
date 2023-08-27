@@ -32,6 +32,8 @@ public class Sabotage implements CommandExecutor {
             ItemStack oxygen = new ItemStack(Material.GLASS);
             ItemStack report = new ItemStack(Material.REDSTONE);
 
+            ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+
             ItemMeta reactor_meta = reactor.getItemMeta();
             reactor_meta.setDisplayName(ChatColor.GOLD + "Reactor Sabotage");
             ItemMeta lights_meta = lights.getItemMeta();
@@ -46,9 +48,10 @@ public class Sabotage implements CommandExecutor {
             oxygen.setItemMeta(oxygen_meta);
             report.setItemMeta(report_meta);
 
-            ItemStack[] menu_items = {reactor,lights,oxygen,report};
+            ItemStack[] menu_items = {reactor,filler,lights,filler,oxygen,filler,report,filler};
             gui.setContents(menu_items);
             player.openInventory(gui);
+
         }
 
         return true;
