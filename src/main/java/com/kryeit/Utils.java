@@ -1,13 +1,13 @@
 package com.kryeit;
 
+import com.google.common.collect.Multiset;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import java.util.Map.Entry;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Utils {
 
@@ -49,5 +49,19 @@ public class Utils {
         }
         if(closest == null) return null;
         return Bukkit.getPlayer(closest);
+    }
+
+    public static String GetKeyFromValue(Map<String,String> map, String value) {
+
+        String matching_key = null;
+
+        for(Map.Entry<String,String> entry : map.entrySet()) {
+            if(Objects.equals(entry.getValue(),value)) {
+                matching_key = entry.getKey();
+                break;
+            }
+        }
+        return matching_key;
+
     }
 }

@@ -3,6 +3,7 @@ package com.kryeit.listener;
 import com.kryeit.Utils;
 import com.kryeit.events.onOxygenSabotage;
 import com.kryeit.events.onReactorSabotage;
+import com.kryeit.miscellanous.GlobalLocalSabotageCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,22 +22,32 @@ public class SabotageGUI implements Listener {
 
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.RED + "Sabotage")) {
             if (event.getClickedInventory() == event.getView().getTopInventory()) {
+                GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
 
                 switch (event.getCurrentItem().getType()) {
                     case BEACON:
-                        player.closeInventory();
-                        onReactorSabotage OnReactorSabotage = new onReactorSabotage();
-                        OnReactorSabotage.OnReactorSabotage();
+                        if(globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                            player.closeInventory();
+                            onReactorSabotage OnReactorSabotage = new onReactorSabotage();
+                            OnReactorSabotage.OnReactorSabotage(player);
+                            globalLocalSabotageCooldown.resetPlayerTime( (Player) event.getWhoClicked());
+                        }
                         break;
                     case REDSTONE_LAMP:
-                        player.closeInventory();
-                        onLightsSabotage.OnLightsSabotage();
+                        if(globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                            player.closeInventory();
+                            onLightsSabotage.OnLightsSabotage(player);
+                        }
+
 
                         break;
                     case GLASS:
-                        player.closeInventory();
-                        onOxygenSabotage oxygenSabotage = new onOxygenSabotage();
-                        oxygenSabotage.OnOxygenSabotage();
+                        if(globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                            player.closeInventory();
+                            onOxygenSabotage oxygenSabotage = new onOxygenSabotage();
+                            oxygenSabotage.OnOxygenSabotage(player);
+                        }
+
                         break;
                     case REDSTONE:
                         player.closeInventory();

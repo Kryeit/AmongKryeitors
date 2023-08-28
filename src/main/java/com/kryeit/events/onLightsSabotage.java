@@ -2,12 +2,19 @@ package com.kryeit.events;
 
 import com.kryeit.AmongKryeitors;
 import com.kryeit.Utils;
+import com.kryeit.miscellanous.GlobalLocalSabotageCooldown;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class onLightsSabotage {
 
-    public static void OnLightsSabotage() {
+    public static void OnLightsSabotage(Player player) {
+
+        GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
+        globalLocalSabotageCooldown.resetPlayerTime(player);
+
+
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a "+ Utils.getTitleCommandSyntax("LIGHTS SABOTAGED!","red"));
         int index = 0;
         while(index< AmongKryeitors.crewmates.toArray().length) {

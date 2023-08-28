@@ -1,6 +1,7 @@
 package com.kryeit.listener;
 
 import com.kryeit.Utils;
+import com.kryeit.miscellanous.GiveOutTasks;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -54,8 +55,8 @@ public class onTaskDone implements Listener{
     );
 
     Map<String,String> drainers = new QuickHash(
-            "UGas","1844 10 -4349",
-            "LGas","1844 10 -4398"
+            "UpGas","1844 10 -4349",
+            "LoGas","1844 10 -4398"
     );
 
     List<String> taskignore = List.of("1762 11 -4380","1763 11 -4377","1758 11 -4372","1758 11 -4371","1762 11 -4379","1761 11 -4379","1764 11 -4379","1763 11 -4378","1764 11 -4378","1764 11 -4379","1763 11 -43780","1764 11 -4378","1764 11 -4379","1763 11 -4378","1764 11 -4378","1764 11 -4379","1763 11 -4379","1762 11 -4378","1761 11 -4378","1760 11 -4378","1760 11 -4379", "1761 11 -4377","1759 12 -4371");
@@ -68,12 +69,22 @@ public class onTaskDone implements Listener{
             if (event.getOldCurrent() == 0) {
                 System.out.println(place);
                 if (tasks.containsValue(place)) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
-                            Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                    GiveOutTasks giveOutTasks = new GiveOutTasks();
+                    boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(place), Utils.GetKeyFromValue(tasks,Utils.parseLocation(event.getBlock().getLocation())));
+                    if(was_task_correct) {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                                Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                    } else {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                                Utils.getTitleCommandSyntax("WRONG TASK!", "red"));
+                    }
+
                 }
             }
         }
     }
+
+
     @EventHandler
     public void OnSpecialTaskDone (PlayerInteractEvent event) {
         Location drainLoc = event.getClickedBlock().getLocation();
@@ -81,18 +92,32 @@ public class onTaskDone implements Listener{
 
         if (drainers.containsValue(finalDrain)) {
             if (Objects.requireNonNull(event.getItem()).toString().equals("ItemStack{CREATE_ENCHANTMENT_INDUSTRY_INK_BUCKET x 1}")) {
-                if (finalDrain.equals(("1844 10 -4349"))) {
-                    System.out.println(Utils.getClosestPlayer("1844 10 -4349").getName());
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(("1844 10 -4349")).getName() + " " +
-                            Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+
+                GiveOutTasks giveOutTasks = new GiveOutTasks();
+                boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(Utils.parseLocation(drainLoc)), Utils.GetKeyFromValue(drainers,Utils.parseLocation(drainLoc)));
+                if(was_task_correct) {
+                    if (finalDrain.equals(("1844 10 -4349"))) {
+                        System.out.println(Utils.getClosestPlayer("1844 10 -4349").getName());
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(("1844 10 -4349")).getName() + " " +
+                                Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                    } else {
+                        System.out.println(Utils.getClosestPlayer("1844 10 -4398").getName());
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(("1844 10 -4398")).getName() + " " +
+                                Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                    }
                 } else {
-                    System.out.println(Utils.getClosestPlayer("1844 10 -4398").getName());
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(("1844 10 -4398")).getName() + " " +
-                            Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(Utils.parseLocation(drainLoc)).getName() + " " +
+                            Utils.getTitleCommandSyntax("WRONG TASK!", "red"));
                 }
+
             }
         }
     }
+
+    Map<String,String> fill = new QuickHash(
+            "StGas","1795 10 -4398"
+    );
+
     @EventHandler
     public void OnBucketFill(PlayerInteractEvent event) {
         Location loc = event.getClickedBlock().getLocation();
@@ -102,18 +127,26 @@ public class onTaskDone implements Listener{
             ItemStack item = event.getItem();
             if (item == null) return;
             if (item.toString().equals("ItemStack{BUCKET x 1}")) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(finalDrain).getName() + " " +
-                        Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                GiveOutTasks giveOutTasks = new GiveOutTasks();
+                String place = Utils.parseLocation(event.getClickedBlock().getLocation());
+                boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(place), Utils.GetKeyFromValue(fill,Utils.parseLocation(event.getClickedBlock().getLocation())));
+                if(was_task_correct) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                            Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                } else {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                            Utils.getTitleCommandSyntax("WRONG TASK!", "red"));
+                }
             }
         }
     }
 
     Map<String,String> datas = new QuickHash(
             "CaData","1772 11 -4346",
-            "WData","1758 11 -4342",
-            "NData","1734 11 -4365",
+            "WeData","1758 11 -4342",
+            "NaData","1734 11 -4365",
             "CoData","1776 11 -4400",
-            "EData","1816 11 -4380"
+            "ElData","1816 11 -4380"
     );
 
     @EventHandler
@@ -123,6 +156,17 @@ public class onTaskDone implements Listener{
 
         if (datas.containsValue(position)) {
             if (Objects.requireNonNull(event.getItem()).toString().contains("ItemStack{WRITTEN_BOOK x 1")) {
+                String place = Utils.parseLocation(event.getClickedBlock().getLocation());
+                GiveOutTasks giveOutTasks = new GiveOutTasks();
+                boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(place), Utils.GetKeyFromValue(datas,Utils.parseLocation(event.getClickedBlock().getLocation())));
+                if(was_task_correct) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                            Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                } else {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                            Utils.getTitleCommandSyntax("WRONG TASK!", "red"));
+                }
+
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a " +
                         Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
             }

@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 
 public class onReactorFixed {
 
-    public void OnReactorFixed() {
+    public static void OnReactorFixed() {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " +
                 Utils.getTitleCommandSyntax("REACTOR FIXED!", "green"));
         ReactorCooldown reactorCooldown = new ReactorCooldown(Bukkit.getPluginManager().getPlugin("AmongKryeitors"));

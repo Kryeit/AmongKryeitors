@@ -3,8 +3,10 @@ package com.kryeit.events;
 import com.kryeit.AmongKryeitors;
 import com.kryeit.Utils;
 import com.kryeit.listener.onReactorFixed;
+import com.kryeit.miscellanous.GlobalLocalSabotageCooldown;
 import com.kryeit.miscellanous.ReactorCooldown;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
@@ -23,7 +25,11 @@ public class onReactorSabotage implements Listener {
         }
     }
 
-    public void OnReactorSabotage() {
+    public void OnReactorSabotage(Player player) {
+
+        GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
+        globalLocalSabotageCooldown.resetPlayerTime(player);
+
         AmongKryeitors.is_reactor_sabotaged = true;
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " +
                 Utils.getTitleCommandSyntax("REACTOR SABOTAGED!", "red"));

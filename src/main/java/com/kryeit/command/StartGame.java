@@ -2,6 +2,7 @@ package com.kryeit.command;
 
 import com.kryeit.AmongKryeitors;
 import com.kryeit.claiming.ClaimUtils;
+import com.kryeit.miscellanous.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,6 +51,21 @@ public class StartGame implements CommandExecutor {
         for (Player p : playersInGame) {
             if(!AmongKryeitors.impostors.contains(p.getUniqueId())) AmongKryeitors.crewmates.add(p.getUniqueId());
         }
+
+        GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
+        globalLocalSabotageCooldown.gameSetup();
+
+        GlobalLocalKillCooldown globalLocalKillCooldown = new GlobalLocalKillCooldown();
+        globalLocalKillCooldown.gameSetup();
+
+        GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
+        globalLocalShapeshiftCooldown.gameSetup();
+
+        InventoryGUI inventoryGUI = new InventoryGUI();
+        inventoryGUI.GameStartUp();
+
+        GiveOutTasks giveOutTasks = new GiveOutTasks();
+        giveOutTasks.DistributeTasks();
 
         return true;
     }

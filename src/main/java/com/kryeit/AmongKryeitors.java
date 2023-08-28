@@ -2,15 +2,18 @@ package com.kryeit;
 
 import com.kryeit.command.Sabotage;
 import com.kryeit.command.StartGame;
+import com.kryeit.events.onReactorSabotage;
 import com.kryeit.listener.*;
+import com.kryeit.miscellanous.VentCheck;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public final class AmongKryeitors extends JavaPlugin {
 
@@ -28,6 +31,11 @@ public final class AmongKryeitors extends JavaPlugin {
     public static Boolean is_otwo_sabotaged = false;
 
     public static Boolean is_reactor_sabotaged = false;
+    public static Map<Player, Integer> kill_cooldowns = Map.of();
+    public static Map<Player, Integer> sabotage_cooldowns = Map.of();
+
+    public static Player engineer;
+    public static Player shapeshifter;
 
 
     @Override
@@ -56,12 +64,17 @@ public final class AmongKryeitors extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LightsGUI(), this);
         getServer().getPluginManager().registerEvents(new OxygenAdminGUI(), this);
         getServer().getPluginManager().registerEvents(new OxygenO2GUI(), this);
+        getServer().getPluginManager().registerEvents(new onReactorSabotage(), this);
+        getServer().getPluginManager().registerEvents(new VentCheck(), this);
+        getServer().getPluginManager().registerEvents(new InventoryGUIClick(), this);
     }
 
     public static AmongKryeitors getInstance() {
         return instance;
     }
 
+    public static class QuickHash extends HashMap<String, String> {
+    }
 
 
 }
