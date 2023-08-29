@@ -48,5 +48,8 @@ public class onEmergencyMeeting {
             index++;
         }
 
+        Voting voting = new Voting();
+        voting.StartVote();
+
     }
 }

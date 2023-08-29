@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -28,14 +30,15 @@ public class InventoryGUIClick implements Listener {
 
     @EventHandler
     public void onInventoryGUIClick(PlayerInteractEvent event) {
+        if(event.getItem()!=null) {
 
-        String item = Objects.requireNonNull(event.getItem()).toString();
+            String item = Objects.requireNonNull(event.getItem()).toString();
 
-        if(item.contains("ItemStack{RED_DYE x 1")) {
-            System.out.println("RED DYE");
-            onBodyReported.OnBodyReported((event.getPlayer()));
-        } else if(item.contains("ItemStack{COMPASS x 1")) {
-            System.out.println("COMPASS");
+            if (item.contains("ItemStack{RED_DYE x 1")) {
+                System.out.println("RED DYE");
+                onBodyReported.OnBodyReported((event.getPlayer()));
+            } else if (item.contains("ItemStack{COMPASS x 1")) {
+                System.out.println("COMPASS");
                 Player sender = event.getPlayer();
                 Player player = event.getPlayer();
 
@@ -75,7 +78,7 @@ public class InventoryGUIClick implements Listener {
                 }
 
 
-                ItemStack[] menu_items = {reactor,filler,lights,filler,oxygen,filler,report,filler,cooldown};
+                ItemStack[] menu_items = {reactor, filler, lights, filler, oxygen, filler, report, filler, cooldown};
                 gui.setContents(menu_items);
                 player.openInventory(gui);
 
@@ -94,60 +97,89 @@ public class InventoryGUIClick implements Listener {
                         globalLocalSabotageCooldown.updatePlayerTime(((Player) sender).getPlayer());
                     }
                 }, 0, 20); // Execute every 1 second (20 ticks)
-        } else if (item.contains("ItemStack{PLAYER_HEAD x 1")) {
-            System.out.println("PLAYER HEAD");
-            Player player = event.getPlayer();
+            } else if (item.contains("ItemStack{PLAYER_HEAD x 1")) {
+                System.out.println("PLAYER HEAD");
+                Player player = event.getPlayer();
 
-            Inventory gui = Bukkit.createInventory(player, 18, ChatColor.GOLD + "Shapeshift");
+                Inventory gui = Bukkit.createInventory(player, 18, ChatColor.GOLD + "Shapeshift");
 
-            List<UUID> PlayersInGame = new ArrayList<>();
-            PlayersInGame.addAll(AmongKryeitors.crewmates);
-            PlayersInGame.addAll(AmongKryeitors.impostors);
+                List<UUID> PlayersInGame = new ArrayList<>();
+                PlayersInGame.addAll(AmongKryeitors.crewmates);
+                PlayersInGame.addAll(AmongKryeitors.impostors);
 
-            int index = 0;
-            for (UUID element : PlayersInGame) {
-                if (!element.equals(event.getPlayer().getUniqueId())) {
-                    ItemStack headItem = Bukkit.getPlayer(element).getInventory().getItem(39);
-                    gui.setItem(index, headItem);
-                    index++;
+                int index = 0;
+                for (UUID element : PlayersInGame) {
+                    if (!element.equals(event.getPlayer().getUniqueId())) {
+                        ItemStack headItem = Bukkit.getPlayer(element).getInventory().getItem(39);
+                        gui.setItem(index, headItem);
+                        index++;
+                    }
                 }
+
+                ItemStack cooldown = new ItemStack(Material.RED_WOOL);
+                gui.setItem(17, cooldown);
+                GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
+
+                player.openInventory(gui);
+
+                Plugin plugin = Bukkit.getPluginManager().getPlugin("AmongKryeitors");
+                int taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+                    Player playerWhoOpenedGUI = event.getPlayer(); // Get the player who opened the GUI
+                    List<Player> playersOver30Seconds = globalLocalShapeshiftCooldown.getPlayersOver30Seconds();
+
+                    if (playersOver30Seconds != null && playersOver30Seconds.contains(playerWhoOpenedGUI)) {
+                        // The player who opened the GUI is in the list
+                        // Now you can change the material of the 9th slot to Material.GREEN_WOOL
+
+                        int slotIndex = 17; // 9th slot index (0-based)
+                        gui.setItem(slotIndex, new ItemStack(Material.LIME_WOOL));
+                    } else {
+                        globalLocalShapeshiftCooldown.updatePlayerTime(playerWhoOpenedGUI); // Use the playerWhoOpenedGUI
+                    }
+                }, 0L, 20); // Replace 0L and 20L with your desired delay and period
+
             }
-
-            ItemStack cooldown = new ItemStack(Material.RED_WOOL);
-            gui.setItem(17, cooldown);
-            GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
-
-            player.openInventory(gui);
-
-            Plugin plugin = Bukkit.getPluginManager().getPlugin("AmongKryeitors");
-            int taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-                Player playerWhoOpenedGUI = event.getPlayer(); // Get the player who opened the GUI
-                List<Player> playersOver30Seconds = globalLocalShapeshiftCooldown.getPlayersOver30Seconds();
-
-                if (playersOver30Seconds != null && playersOver30Seconds.contains(playerWhoOpenedGUI)) {
-                    // The player who opened the GUI is in the list
-                    // Now you can change the material of the 9th slot to Material.GREEN_WOOL
-
-                    int slotIndex = 17; // 9th slot index (0-based)
-                    gui.setItem(slotIndex, new ItemStack(Material.LIME_WOOL));
-                } else {
-                    globalLocalShapeshiftCooldown.updatePlayerTime(playerWhoOpenedGUI); // Use the playerWhoOpenedGUI
-                }
-            }, 0L, 20); // Replace 0L and 20L with your desired delay and period
-
         }
 
         }
 
         @EventHandler
     public void ShapeshiftClick(InventoryClickEvent event) {
-        GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
-        if(globalLocalShapeshiftCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+        if (event.getView().getTitle().equalsIgnoreCase(ChatColor.GOLD + "Shapeshift")) {
+            if (event.getClickedInventory() == event.getView().getTopInventory()) {
+                GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
+                if (globalLocalShapeshiftCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
 
-            event.getWhoClicked().getInventory().setItem(39, event.getCurrentItem());
+                    event.getWhoClicked().getInventory().setItem(39, event.getCurrentItem());
+                }
+                event.setCancelled(true);
+            }
         }
-        event.setCancelled(true);
-        }
+    }
+
+    @EventHandler
+    public void ItemDrop(PlayerDropItemEvent event) {
+            switch (event.getItemDrop().getItemStack().getType()) {
+                case COMPASS: event.setCancelled(true);
+                case RED_DYE: event.setCancelled(true);
+                case GRAY_STAINED_GLASS_PANE: event.setCancelled(true);
+                case NETHERITE_SWORD: event.setCancelled(true);
+                case PLAYER_HEAD: event.setCancelled(true);
+            }
 
     }
+
+    @EventHandler
+    public void ItemClick(InventoryClickEvent event) {
+        switch (Objects.requireNonNull(event.getCurrentItem()).getType()) {
+            case COMPASS: event.setCancelled(true);
+            case RED_DYE: event.setCancelled(true);
+            case GRAY_STAINED_GLASS_PANE: event.setCancelled(true);
+            case NETHERITE_SWORD: event.setCancelled(true);
+            case PLAYER_HEAD: event.setCancelled(true);
+        }
+    }
+
+
+}
 

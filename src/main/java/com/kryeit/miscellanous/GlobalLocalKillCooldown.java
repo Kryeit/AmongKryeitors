@@ -26,7 +26,6 @@ public class GlobalLocalKillCooldown {
     }
 
     public void updatePlayerTime(Player player) {
-        System.out.println("Player time updated");
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - playerTimeMap.getOrDefault(player, currentTime);
 
@@ -35,7 +34,7 @@ public class GlobalLocalKillCooldown {
                 playersOver30Seconds.add(player);
             }
         }
-        System.out.println(playerTimeMap);
+
     }
 
     public void resetPlayerTime(Player player) {

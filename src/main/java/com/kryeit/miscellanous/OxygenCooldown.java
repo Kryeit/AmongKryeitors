@@ -1,6 +1,7 @@
 package com.kryeit.miscellanous;
 
 import com.kryeit.AmongKryeitors;
+import com.kryeit.events.onImpostorsWin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -38,6 +39,8 @@ public class OxygenCooldown {
                 for (UUID players : PlayersInGame) {
                     Bukkit.getPlayer(players).setLevel(0);
                 }
+                onImpostorsWin onImpostorsWin = new onImpostorsWin();
+                onImpostorsWin.OnImpostorsWin();
             } else {
                 for(UUID players2 : PlayersInGame) {
                     Bukkit.getPlayer(players2).setLevel(remainingCooldown[0]);

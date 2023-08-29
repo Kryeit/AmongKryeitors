@@ -2,6 +2,7 @@ package com.kryeit;
 
 import com.kryeit.command.Sabotage;
 import com.kryeit.command.StartGame;
+import com.kryeit.events.Voting;
 import com.kryeit.events.onReactorSabotage;
 import com.kryeit.listener.*;
 import com.kryeit.miscellanous.VentCheck;
@@ -37,6 +38,9 @@ public final class AmongKryeitors extends JavaPlugin {
     public static Player engineer;
     public static Player shapeshifter;
 
+    public static Map<String,String> player_task_list = new HashMap<>();
+    public static Map<String,Integer> vote_per_player = new HashMap<>();
+
 
     @Override
     public void onEnable() {
@@ -67,6 +71,7 @@ public final class AmongKryeitors extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new onReactorSabotage(), this);
         getServer().getPluginManager().registerEvents(new VentCheck(), this);
         getServer().getPluginManager().registerEvents(new InventoryGUIClick(), this);
+        getServer().getPluginManager().registerEvents(new Voting(), this);
     }
 
     public static AmongKryeitors getInstance() {

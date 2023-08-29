@@ -1,5 +1,6 @@
 package com.kryeit.listener;
 
+import com.kryeit.AmongKryeitors;
 import com.kryeit.Utils;
 import com.kryeit.miscellanous.GiveOutTasks;
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.kryeit.events.onCrewmatesWin;
 
 public class onTaskDone implements Listener{
 
@@ -28,30 +30,30 @@ public class onTaskDone implements Listener{
 
     Map<String,String> tasks = new QuickHash(
             "CaTrash","1780 14 -4374",
-            "WPower","1748 11 -4352",
-            "OTrash","1769 14 -4361",
-            "OPower","1760 11 -4365",
-            "NPower","1736 11 -4380",
-            "NTarget","1731 12 -4383",
+            "WePower","1748 11 -4352",
+            "O2Trash","1769 14 -4361",
+            "O2Power","1760 11 -4365",
+            "NaPower","1736 11 -4380",
+            "NaTarget","1731 12 -4383",
             "ShPower","1752 11 -4386",
             "ShWiring","1764 9 -4405",
             "CoPower","1769 11 -4400",
-            "STrash","1784 12 -4412",
-            "SWiring","1795 10 -4383",
-            "APower","1783 11 -4377",
-            "ACard","1755 11 -4373",
-            "AData","1780 11 -4375",
-            "MScan","1812 9 -4374",
-            "MAnomaly","1798 12 -4375",
-            "UTarget","1848 11 -4347",
-            "UPower","1845 11 -4362",
-            "SPower","1824 11 -4372",
-            "RSimon","1864 11 -4392",
-            "RPin","1856 11 -4348",
-            "LTarget","1848 11 -4400",
-            "LPower","1845 11 -4385",
-            "EPower","1814 11 -4377",
-            "EWiring","1809 10 -4381"
+            "StTrash","1784 12 -4412",
+            "StWiring","1795 10 -4383",
+            "AdPower","1783 11 -4377",
+            "AdCard","1755 11 -4373",
+            "AdData","1780 11 -4376",
+            "MeScan","1812 9 -4374",
+            "MeAnomaly","1798 12 -4375",
+            "UpTarget","1848 11 -4347",
+            "UpPower","1845 11 -4362",
+            "SePower","1824 11 -4372",
+            "ReSimon","1864 11 -4392",
+            "RePin","1856 11 -4348",
+            "LoTarget","1848 11 -4400",
+            "LoPower","1845 11 -4385",
+            "ElPower","1814 11 -4377",
+            "ElWiring","1809 10 -4381"
     );
 
     Map<String,String> drainers = new QuickHash(
@@ -72,6 +74,10 @@ public class onTaskDone implements Listener{
                     GiveOutTasks giveOutTasks = new GiveOutTasks();
                     boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(place), Utils.GetKeyFromValue(tasks,Utils.parseLocation(event.getBlock().getLocation())));
                     if(was_task_correct) {
+                        if(AreAllTAsksDone()) {
+                            onCrewmatesWin onCrewmatesWin = new onCrewmatesWin();
+                            onCrewmatesWin.OnCrewmatesWin();
+                        }
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
                                 Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
                     } else {
@@ -96,6 +102,10 @@ public class onTaskDone implements Listener{
                 GiveOutTasks giveOutTasks = new GiveOutTasks();
                 boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(Utils.parseLocation(drainLoc)), Utils.GetKeyFromValue(drainers,Utils.parseLocation(drainLoc)));
                 if(was_task_correct) {
+                    if(AreAllTAsksDone()) {
+                        onCrewmatesWin onCrewmatesWin = new onCrewmatesWin();
+                        onCrewmatesWin.OnCrewmatesWin();
+                    }
                     if (finalDrain.equals(("1844 10 -4349"))) {
                         System.out.println(Utils.getClosestPlayer("1844 10 -4349").getName());
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(("1844 10 -4349")).getName() + " " +
@@ -131,6 +141,10 @@ public class onTaskDone implements Listener{
                 String place = Utils.parseLocation(event.getClickedBlock().getLocation());
                 boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(place), Utils.GetKeyFromValue(fill,Utils.parseLocation(event.getClickedBlock().getLocation())));
                 if(was_task_correct) {
+                    if(AreAllTAsksDone()) {
+                        onCrewmatesWin onCrewmatesWin = new onCrewmatesWin();
+                        onCrewmatesWin.OnCrewmatesWin();
+                    }
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
                             Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
                 } else {
@@ -151,7 +165,7 @@ public class onTaskDone implements Listener{
 
     @EventHandler
     public void OnDataDownloaded (PlayerInteractEvent event) {
-        Location loc = event.getClickedBlock().getLocation();
+        Location loc = Objects.requireNonNull(event.getClickedBlock()).getLocation();
         String position = Utils.parseLocation(loc);
 
         if (datas.containsValue(position)) {
@@ -160,17 +174,46 @@ public class onTaskDone implements Listener{
                 GiveOutTasks giveOutTasks = new GiveOutTasks();
                 boolean was_task_correct = giveOutTasks.EraseTaskFromPlayer(Utils.getClosestPlayer(place), Utils.GetKeyFromValue(datas,Utils.parseLocation(event.getClickedBlock().getLocation())));
                 if(was_task_correct) {
+                    if(AreAllTAsksDone()) {
+                        onCrewmatesWin onCrewmatesWin = new onCrewmatesWin();
+                        onCrewmatesWin.OnCrewmatesWin();
+                    }
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
                             Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
                 } else {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
                             Utils.getTitleCommandSyntax("WRONG TASK!", "red"));
                 }
-
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a " +
-                        Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
             }
         }
     }
+
+    public boolean AreAllTAsksDone() {
+
+        GiveOutTasks giveOutTasks = new GiveOutTasks();
+        Map<String, String> crewmates_list = new HashMap<String, String>();
+
+        for (Map.Entry<String, String> entry : AmongKryeitors.player_task_list.entrySet()) {
+            if (AmongKryeitors.crewmates.contains(Bukkit.getPlayer(entry.getKey()).getUniqueId())) {
+                crewmates_list.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        boolean is_it = true;
+
+        for (String value : crewmates_list.values()) {
+            if (value != "") {
+                is_it = false;
+            }
+        }
+
+        if (is_it) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }
 

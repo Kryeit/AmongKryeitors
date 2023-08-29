@@ -51,6 +51,8 @@ public class StartGame implements CommandExecutor {
         for (Player p : playersInGame) {
             if(!AmongKryeitors.impostors.contains(p.getUniqueId())) AmongKryeitors.crewmates.add(p.getUniqueId());
         }
+        AmongKryeitors.engineer = Bukkit.getPlayer(AmongKryeitors.crewmates.get(random.nextInt(AmongKryeitors.crewmates.size())));
+        AmongKryeitors.shapeshifter = Bukkit.getPlayer(AmongKryeitors.impostors.get(random.nextInt(AmongKryeitors.impostors.size())));
 
         GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
         globalLocalSabotageCooldown.gameSetup();
@@ -65,7 +67,16 @@ public class StartGame implements CommandExecutor {
         inventoryGUI.GameStartUp();
 
         GiveOutTasks giveOutTasks = new GiveOutTasks();
+        try {
+            giveOutTasks.DistributeTasks();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         giveOutTasks.DistributeTasks();
+
+        KillCooldownRegularCheck killCooldownRegularCheck = new KillCooldownRegularCheck();
+        killCooldownRegularCheck.startCooldown();
 
         return true;
     }

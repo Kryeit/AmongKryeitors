@@ -2,6 +2,7 @@ package com.kryeit.listener;
 
 import com.kryeit.AmongKryeitors;
 import com.kryeit.Utils;
+import com.kryeit.global_variable_managers.PersonKickedOut;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -16,7 +17,8 @@ public class onPlayerDeath implements Listener {
     @EventHandler
     public void OnDeath(PlayerDeathEvent event) {
         Player dead = event.getEntity();
-        AmongKryeitors.crewmates.remove(dead.getUniqueId());
+        PersonKickedOut personKickedOut = new PersonKickedOut();
+        personKickedOut.PersonKickedOut(dead);
 
         Location loc = event.getEntity().getLocation();
         String place = Utils.parseLocation(loc);
@@ -27,6 +29,5 @@ public class onPlayerDeath implements Listener {
                 + random.nextInt(9) + "]{ExtraType:\"" + event.getEntity().getName()
                 + "\",SkullType:3}");
         AmongKryeitors.corpses.add(place);
-        AmongKryeitors.currentDead.add(event.getEntity().getPlayer());
     }
 }

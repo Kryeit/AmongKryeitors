@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.List;
+import java.util.Objects;
 
 public class VentCheck implements Listener {
 
@@ -32,7 +33,7 @@ public class VentCheck implements Listener {
     public void OnVentClicked (PlayerInteractEvent event) {
 
 
-        if(vents.contains(Utils.parseLocation(event.getClickedBlock().getLocation()))) {
+        if(vents.contains(Utils.parseLocation(Objects.requireNonNull(event.getClickedBlock()).getLocation()))) {
             if(AmongKryeitors.impostors.contains(event.getPlayer().getUniqueId())) {
 
             } else if (AmongKryeitors.engineer.equals(event.getPlayer())) {

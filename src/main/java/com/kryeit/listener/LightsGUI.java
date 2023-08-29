@@ -13,13 +13,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class LightsGUI implements Listener {
 
     @EventHandler
     public void onLightsSabotageTask(PlayerInteractEvent event) {
-        if (Utils.parseLocation(event.getClickedBlock().getLocation()).equals("1818 12 -4382") && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (Utils.parseLocation(Objects.requireNonNull(event.getClickedBlock()).getLocation()).equals("1818 12 -4382") && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             Inventory gui = Bukkit.createInventory(event.getPlayer(), 9, ChatColor.GREEN + "Fix Lights");
 
             Random random = new Random();
