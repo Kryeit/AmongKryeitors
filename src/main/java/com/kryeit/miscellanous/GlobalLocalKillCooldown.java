@@ -17,7 +17,7 @@ public class GlobalLocalKillCooldown {
         playerTimeMap.clear();
         playersOver30Seconds.clear();
 
-        for (UUID playerId : AmongKryeitors.crewmates) {
+        for (UUID playerId : AmongKryeitors.impostors) {
             Player player = Bukkit.getPlayer(playerId);
             if (player != null) {
                 playerTimeMap.put(player, System.currentTimeMillis());

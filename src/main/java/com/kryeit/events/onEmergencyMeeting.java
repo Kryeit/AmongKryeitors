@@ -49,6 +49,7 @@ public class onEmergencyMeeting {
         }
 
         Voting voting = new Voting();
+        AmongKryeitors.corpses.clear();
         voting.StartVote();
 
     }

@@ -17,12 +17,9 @@ public class GlobalLocalShapeshiftCooldown {
         playerTimeMap.clear();
         playersOver30Seconds.clear();
 
-        for (UUID playerId : AmongKryeitors.crewmates) {
-            Player player = Bukkit.getPlayer(playerId);
-            if (player != null) {
-                playerTimeMap.put(player, System.currentTimeMillis());
-            }
-        }
+        Player player = AmongKryeitors.shapeshifter;
+
+        playerTimeMap.put(player, System.currentTimeMillis());
     }
 
     public void updatePlayerTime(Player player) {

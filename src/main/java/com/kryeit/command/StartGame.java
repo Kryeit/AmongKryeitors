@@ -13,6 +13,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class StartGame implements CommandExecutor {
 
@@ -25,8 +26,10 @@ public class StartGame implements CommandExecutor {
         }
 
         if (playersInGame.size() < 3) {
-            AmongKryeitors.crewmates.add(playersInGame.get(0).getUniqueId());
-            System.out.println(AmongKryeitors.crewmates);
+            for(Player element : playersInGame) {
+                AmongKryeitors.crewmates.add(element.getUniqueId());
+                System.out.println(AmongKryeitors.crewmates);
+            }
         }
         if (playersInGame.size() <= 5) {
             impostorAmount = 1;
