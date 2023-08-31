@@ -1,6 +1,7 @@
 package com.kryeit.command;
 
 import com.kryeit.AmongKryeitors;
+import com.kryeit.Utils;
 import com.kryeit.claiming.ClaimUtils;
 import com.kryeit.miscellanous.*;
 import org.bukkit.Bukkit;
@@ -57,6 +58,28 @@ public class StartGame implements CommandExecutor {
         AmongKryeitors.engineer = Bukkit.getPlayer(AmongKryeitors.crewmates.get(random.nextInt(AmongKryeitors.crewmates.size())));
         AmongKryeitors.shapeshifter = Bukkit.getPlayer(AmongKryeitors.impostors.get(random.nextInt(AmongKryeitors.impostors.size())));
 
+        for(Player element : playersInGame) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"tag " + element.getName() + " add ingame");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"effect give @a[tag=ingame] blindness 5000 1 true");
+        }
+        for(Player player : playersInGame) {
+            if(AmongKryeitors.engineer == player) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("ENGINEER","green"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"You are a crewmate, you can travel through vents, do your tasks and find the impostors\",\"color\":\"green\"}");
+            } else if (AmongKryeitors.shapeshifter == player) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("SHAPESHIFTER","red"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"You can turn into anyone, kill everyone and win the game\",\"color\":\"red\"}");
+            } else if(AmongKryeitors.impostors.contains(player.getUniqueId())) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("IMPOSTOR","red"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"Kill everyone and win the game\",\"color\":\"red\"}");
+            } else if (AmongKryeitors.crewmates.contains(player.getUniqueId())) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("CREWMATE","green"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"Do your tasks and find the impostors\",\"color\":\"green\"}");
+            }
+        }
+
+
+
         GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
         globalLocalSabotageCooldown.gameSetup();
 
@@ -70,12 +93,6 @@ public class StartGame implements CommandExecutor {
         inventoryGUI.GameStartUp();
 
         GiveOutTasks giveOutTasks = new GiveOutTasks();
-        try {
-            giveOutTasks.DistributeTasks();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         giveOutTasks.DistributeTasks();
 
         KillCooldownRegularCheck killCooldownRegularCheck = new KillCooldownRegularCheck();

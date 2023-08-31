@@ -169,6 +169,7 @@ public class onTaskDone implements Listener{
         String position = Utils.parseLocation(loc);
 
         if (datas.containsValue(position)) {
+            System.out.println(event.getItem().toString());
             if (Objects.requireNonNull(event.getItem()).toString().contains("ItemStack{WRITTEN_BOOK x 1")) {
                 String place = Utils.parseLocation(event.getClickedBlock().getLocation());
                 GiveOutTasks giveOutTasks = new GiveOutTasks();

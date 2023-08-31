@@ -31,7 +31,7 @@ public class onReactorSabotage implements Listener {
         globalLocalSabotageCooldown.resetPlayerTime(player);
 
         AmongKryeitors.is_reactor_sabotaged = true;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " +
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " +
                 Utils.getTitleCommandSyntax("REACTOR SABOTAGED!", "red"));
         ReactorCooldown reactorCooldown = new ReactorCooldown(Bukkit.getPluginManager().getPlugin("AmongKryeitors"));
         reactorCooldown.startCooldown(30);

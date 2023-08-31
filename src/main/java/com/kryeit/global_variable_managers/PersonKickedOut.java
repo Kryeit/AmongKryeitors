@@ -1,6 +1,7 @@
 package com.kryeit.global_variable_managers;
 
 import com.kryeit.AmongKryeitors;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PersonKickedOut {
@@ -26,6 +27,8 @@ public class PersonKickedOut {
             AmongKryeitors.sabotage_cooldowns.remove(player);
 
         }
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"tag " + player.getName() + " remove ingame");
 
     }
 

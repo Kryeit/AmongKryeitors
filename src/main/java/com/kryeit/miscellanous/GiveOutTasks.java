@@ -1,17 +1,23 @@
 package com.kryeit.miscellanous;
 
+import com.griefdefender.api.util.NBTUtil;
+import com.griefdefender.lib.kyori.adventure.text.NBTComponentBuilder;
 import com.kryeit.AmongKryeitors;
+import com.kryeit.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import java.lang.reflect.Array;
 import java.util.*;
 
 public class GiveOutTasks {
 
-    Map<String,String> secondarytask = new QuickHash("AdData;","Admin : Upload Data","UpGas;","Upper Engine : Empty Gas",
+    public Map<String,String> secondarytask = new QuickHash("AdData;","Admin : Upload Data","UpGas;","Upper Engine : Empty Gas",
             "LoGas;","Lower Engine : Empty Gas");
-    Map<String, String> primarytask = new QuickHash("CaTrash;","Cafeteria : Empty Trash",
+    public Map<String, String> primarytask = new QuickHash("CaTrash;","Cafeteria : Empty Trash",
             "WePower;","Weapons : Accept Power",
             "O2Trash;","O2 : Empty Trash",
             "O2Power;","O2 : Accept Power",
@@ -49,15 +55,20 @@ public class GiveOutTasks {
         List<UUID> PlayersInGame = new ArrayList<>();
         PlayersInGame.addAll(AmongKryeitors.crewmates);
         PlayersInGame.addAll(AmongKryeitors.impostors);
-        
+        System.out.println(PlayersInGame.toArray().length);
+
         for (UUID element : PlayersInGame) {
             String task_set = GenerateTaskSet(primarytask, 14);
             String player_name = Bukkit.getPlayer(element).getName();
             AmongKryeitors.player_task_list.put(player_name,task_set);
+            Collection<String> separated_tasks = SeparateTasks(task_set);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"give " + Bukkit.getPlayer(element).getName() + " create:clipboard" + Utils.GetClipboardFromTaskList(separated_tasks));
+
         }
         for (Map.Entry<String, String> entry : AmongKryeitors.player_task_list.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
+
 
 
     }

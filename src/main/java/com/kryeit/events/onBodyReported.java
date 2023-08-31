@@ -13,7 +13,7 @@ public class onBodyReported {
             Location loc = Utils.parseString(AmongKryeitors.corpses.get(index));
 
             if (player.getLocation().distance(loc) < 5) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " +
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " +
                         Utils.getTitleCommandSyntax("BODY REPORTED", "gold"));
                 onEmergencyMeeting.OnEmergencyMeeting(true);
                 return true;

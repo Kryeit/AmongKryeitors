@@ -15,7 +15,7 @@ public class onLightsSabotage {
         globalLocalSabotageCooldown.resetPlayerTime(player);
 
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a "+ Utils.getTitleCommandSyntax("LIGHTS SABOTAGED!","red"));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a[tag=ingame] "+ Utils.getTitleCommandSyntax("LIGHTS SABOTAGED!","red"));
         int index = 0;
         while(index< AmongKryeitors.crewmates.toArray().length) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "effect give "+  Bukkit.getPlayer(AmongKryeitors.crewmates.get(index)).getName() + " blindness 5000 1 true");

@@ -33,7 +33,7 @@ public class onEmergencyMeeting {
     public static void OnEmergencyMeeting(Boolean reported) {
 
         if(!reported) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " +
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " +
                     Utils.getTitleCommandSyntax("EMERGENCY MEETING", "gold"));
         }
 

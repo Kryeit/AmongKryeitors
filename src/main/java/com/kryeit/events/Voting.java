@@ -2,6 +2,8 @@ package com.kryeit.events;
 
 import com.kryeit.AmongKryeitors;
 import com.kryeit.Utils;
+import com.kryeit.global_variable_managers.PersonKickedOut;
+import com.kryeit.miscellanous.EmergencyCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -134,14 +136,21 @@ public class Voting implements Listener {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " + Utils.getTitleCommandSyntax("VOTE SKIPPED","green"));
                 } else {
                     if (AmongKryeitors.impostors.contains(Bukkit.getPlayer(highestScorer).getUniqueId())) {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " + Utils.getTitleCommandSyntax(highestScorer + "has been voted", "green"));
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a subtitle {\"text\":\"This player was an Impostor\",\"color\":\"green\"}");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax(highestScorer + "has been voted", "green"));
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"This player was an Impostor\",\"color\":\"green\"}");
+                        PersonKickedOut personKickedOut = new PersonKickedOut();
+                        personKickedOut.PersonKickedOut(Bukkit.getPlayer(highestScorer));
                     } else {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " + Utils.getTitleCommandSyntax(highestScorer + "has been voted", "red"));
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a subtitle {\"text\":\"This player was not an Impostor\",\"color\":\"red\"}");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax(highestScorer + "has been voted", "red"));
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"This player was not an Impostor\",\"color\":\"red\"}");
+                        PersonKickedOut personKickedOut = new PersonKickedOut();
+                        personKickedOut.PersonKickedOut(Bukkit.getPlayer(highestScorer));
                     }
                 }
             }
+
+            EmergencyCooldown emergencyCooldown = new EmergencyCooldown();
+            emergencyCooldown.StartCooldown();
         }
     }
 

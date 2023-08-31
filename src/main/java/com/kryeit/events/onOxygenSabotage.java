@@ -14,7 +14,7 @@ public class onOxygenSabotage {
         GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
         globalLocalSabotageCooldown.resetPlayerTime(player);
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a " + Utils.getTitleCommandSyntax("OXYGEN SABOTAGED!","red"));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"title @a[tag=ingame] " + Utils.getTitleCommandSyntax("OXYGEN SABOTAGED!","red"));
         OxygenCooldown oxygenCooldown = new OxygenCooldown(Bukkit.getPluginManager().getPlugin("AmongKryeitors"));
         oxygenCooldown.startCooldown(60);
         AmongKryeitors.is_otwo_sabotaged = true; // Actually should be named is_oxygen_sabotaged

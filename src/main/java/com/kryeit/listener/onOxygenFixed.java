@@ -22,7 +22,7 @@ public class onOxygenFixed {
         System.out.println(o2);
         if(admin) {
             if (o2) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a " + Utils.getTitleCommandSyntax("OXYGEN FIXED!","green"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("OXYGEN FIXED!","green"));
                 OxygenCooldown oxygenCooldown = new OxygenCooldown(Bukkit.getPluginManager().getPlugin("AmongKryeitors"));
                 oxygenCooldown.interruptCooldown();
                 AmongKryeitors.is_otwo_sabotaged = false;

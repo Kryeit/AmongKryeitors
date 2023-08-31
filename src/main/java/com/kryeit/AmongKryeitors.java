@@ -72,6 +72,7 @@ public final class AmongKryeitors extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VentCheck(), this);
         getServer().getPluginManager().registerEvents(new InventoryGUIClick(), this);
         getServer().getPluginManager().registerEvents(new Voting(), this);
+        getServer().getPluginManager().registerEvents(new EmergencyButtons(), this);
     }
 
     public static AmongKryeitors getInstance() {
