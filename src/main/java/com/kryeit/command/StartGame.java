@@ -32,25 +32,22 @@ public class StartGame implements CommandExecutor {
                 System.out.println(AmongKryeitors.crewmates);
             }
         }
-        if (playersInGame.size() <= 5) {
+        if (playersInGame.size() <= 4) {
             impostorAmount = 1;
         } else if (playersInGame.size() <= 8) {
             impostorAmount = 2;
         } else impostorAmount = 3;
 
-        List<Player> shuffledPlayers = new ArrayList<>(playersInGame);
         Random random = new Random();
-        for (int i = shuffledPlayers.size() - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);
-            Player temp = shuffledPlayers.get(i);
-            shuffledPlayers.set(i, shuffledPlayers.get(j));
-            shuffledPlayers.set(j, temp);
+
+        int index = 0;
+        while(index!=impostorAmount) {
+            int new_person = random.nextInt(playersInGame.size());
+            AmongKryeitors.impostors.add(playersInGame.get(new_person).getUniqueId());
+            index++;
         }
 
         // Add the first 'impostorAmount' players to chosenPlayers
-        for (int i = 0; i < impostorAmount; i++) {
-            AmongKryeitors.impostors.add(shuffledPlayers.get(i).getUniqueId());
-        }
 
         for (Player p : playersInGame) {
             if(!AmongKryeitors.impostors.contains(p.getUniqueId())) AmongKryeitors.crewmates.add(p.getUniqueId());
@@ -60,25 +57,25 @@ public class StartGame implements CommandExecutor {
 
         for(Player element : playersInGame) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"tag " + element.getName() + " add ingame");
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"effect give @a[tag=ingame] blindness 5000 1 true");
         }
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"effect give @a[tag=ingame] blindness 5000 1 true");
         for(Player player : playersInGame) {
-            if(AmongKryeitors.engineer == player) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("ENGINEER","green"));
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"You are a crewmate, you can travel through vents, do your tasks and find the impostors\",\"color\":\"green\"}");
-            } else if (AmongKryeitors.shapeshifter == player) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("SHAPESHIFTER","red"));
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"You can turn into anyone, kill everyone and win the game\",\"color\":\"red\"}");
+            if(AmongKryeitors.engineer.equals(player)) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title "+ player.getName() + " " + Utils.getTitleCommandSyntax("ENGINEER","green"));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title "+ player.getName() + " " + "subtitle {\"text\":\"You are a crewmate, you can travel through vents, do your tasks and find the impostors\",\"color\":\"green\"}");
+            } else if (AmongKryeitors.shapeshifter.equals(player)) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title "+ player.getName() + " " + Utils.getTitleCommandSyntax("SHAPESHIFTER","red"));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title "+ player.getName() + " subtitle {\"text\":\"You can turn into anyone, kill everyone and win the game\",\"color\":\"red\"}");
             } else if(AmongKryeitors.impostors.contains(player.getUniqueId())) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("IMPOSTOR","red"));
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"Kill everyone and win the game\",\"color\":\"red\"}");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title "+ player.getName() + " " + Utils.getTitleCommandSyntax("IMPOSTOR","red"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + player.getName() + " subtitle {\"text\":\"Kill everyone and win the game\",\"color\":\"red\"}");
             } else if (AmongKryeitors.crewmates.contains(player.getUniqueId())) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] " + Utils.getTitleCommandSyntax("CREWMATE","green"));
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title @a[tag=ingame] subtitle {\"text\":\"Do your tasks and find the impostors\",\"color\":\"green\"}");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title "+ player.getName()  + " " + Utils.getTitleCommandSyntax("CREWMATE","green"));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + player.getName() + " " + "subtitle {\"text\":\"Do your tasks and find the impostors\",\"color\":\"green\"}");
             }
         }
 
-
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"effect clear @a[tag=ingame]");
 
         GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
         globalLocalSabotageCooldown.gameSetup();
@@ -97,6 +94,9 @@ public class StartGame implements CommandExecutor {
 
         KillCooldownRegularCheck killCooldownRegularCheck = new KillCooldownRegularCheck();
         killCooldownRegularCheck.startCooldown();
+
+        EmergencyCooldown emergencyCooldown = new EmergencyCooldown();
+        emergencyCooldown.StartCooldown();
 
         return true;
     }

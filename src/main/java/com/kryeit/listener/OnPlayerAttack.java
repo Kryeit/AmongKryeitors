@@ -2,7 +2,9 @@ package com.kryeit.listener;
 
 import com.griefdefender.api.Core;
 import com.griefdefender.api.GriefDefender;
+import com.kryeit.AmongKryeitors;
 import com.kryeit.claiming.ClaimUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +28,9 @@ public class OnPlayerAttack implements Listener {
 
             if(ClaimUtils.isInside(victim) && ClaimUtils.isInside(perpetrator)) {
 
-                // Do stuff
+                if(AmongKryeitors.impostors.contains(perpetrator.getPlayer().getUniqueId())) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill " + victim.getPlayer().getName());
+                }
 
                 if(false) {
 

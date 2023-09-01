@@ -30,15 +30,15 @@ public class InventoryGUIClick implements Listener {
 
     @EventHandler
     public void onInventoryGUIClick(PlayerInteractEvent event) {
-        if(event.getItem()!=null) {
+        if (event.getItem() != null) {
 
             String item = Objects.requireNonNull(event.getItem()).toString();
 
             if (item.contains("ItemStack{RED_DYE x 1")) {
                 System.out.println("RED DYE");
                 onBodyReported.OnBodyReported((event.getPlayer()));
-            } else if (item.contains("ItemStack{COMPASS x 1")) {
-                System.out.println("COMPASS");
+            } else if (item.contains("ItemStack{CLOCK x 1")) {
+                System.out.println("CLOCK");
                 Player sender = event.getPlayer();
                 Player player = event.getPlayer();
 
@@ -141,9 +141,9 @@ public class InventoryGUIClick implements Listener {
             }
         }
 
-        }
+    }
 
-        @EventHandler
+    @EventHandler
     public void ShapeshiftClick(InventoryClickEvent event) {
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.GOLD + "Shapeshift")) {
             if (event.getClickedInventory() == event.getView().getTopInventory()) {
@@ -159,27 +159,52 @@ public class InventoryGUIClick implements Listener {
 
     @EventHandler
     public void ItemDrop(PlayerDropItemEvent event) {
-            switch (event.getItemDrop().getItemStack().getType()) {
-                case COMPASS: event.setCancelled(true);
-                case RED_DYE: event.setCancelled(true);
-                case GRAY_STAINED_GLASS_PANE: event.setCancelled(true);
-                case NETHERITE_SWORD: event.setCancelled(true);
-                case PLAYER_HEAD: event.setCancelled(true);
-            }
+        switch (event.getItemDrop().getItemStack().getType()) {
+            case CLOCK:
+                event.setCancelled(true);
+            case RED_DYE:
+                event.setCancelled(true);
+            case GRAY_STAINED_GLASS_PANE:
+                event.setCancelled(true);
+            case NETHERITE_SWORD:
+                event.setCancelled(true);
+            case PLAYER_HEAD:
+                event.setCancelled(true);
+        }
 
     }
 
     @EventHandler
     public void ItemClick(InventoryClickEvent event) {
-        switch (Objects.requireNonNull(event.getCurrentItem()).getType()) {
-            case COMPASS: event.setCancelled(true);
-            case RED_DYE: event.setCancelled(true);
-            case GRAY_STAINED_GLASS_PANE: event.setCancelled(true);
-            case NETHERITE_SWORD: event.setCancelled(true);
-            case PLAYER_HEAD: event.setCancelled(true);
+        if (AmongKryeitors.crewmates.contains(event.getWhoClicked().getUniqueId())) {
+            switch (Objects.requireNonNull(event.getCurrentItem()).getType()) {
+                case CLOCK:
+                    event.setCancelled(true);
+                case RED_DYE:
+                    event.setCancelled(true);
+                case GRAY_STAINED_GLASS_PANE:
+                    event.setCancelled(true);
+                case NETHERITE_SWORD:
+                    event.setCancelled(true);
+                case PLAYER_HEAD:
+                    event.setCancelled(true);
+            }
+        } else if (AmongKryeitors.impostors.contains(event.getWhoClicked().getUniqueId())) {
+            switch (Objects.requireNonNull(event.getCurrentItem()).getType()) {
+                case CLOCK:
+                    event.setCancelled(true);
+                case RED_DYE:
+                    event.setCancelled(true);
+                case GRAY_STAINED_GLASS_PANE:
+                    event.setCancelled(true);
+                case NETHERITE_SWORD:
+                    event.setCancelled(true);
+                case PLAYER_HEAD:
+                    event.setCancelled(true);
+            }
         }
+
+
     }
-
-
 }
 

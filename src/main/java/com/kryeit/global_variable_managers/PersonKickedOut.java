@@ -8,16 +8,16 @@ public class PersonKickedOut {
 
     public void PersonKickedOut(Player player) {
 
-        if(AmongKryeitors.crewmates.contains(player)) {
-            AmongKryeitors.crewmates.remove(player);
+        if(AmongKryeitors.crewmates.contains(player.getUniqueId())) {
+            AmongKryeitors.crewmates.remove(player.getUniqueId());
         } else {
-            AmongKryeitors.impostors.remove(player);
+            AmongKryeitors.impostors.remove(player.getUniqueId());
         }
 
         if(AmongKryeitors.engineer.equals(player)) {
-            AmongKryeitors.engineer = null;
+            AmongKryeitors.engineer.remove();
         } else if (AmongKryeitors.shapeshifter.equals(player)) {
-            AmongKryeitors.shapeshifter = null;
+            AmongKryeitors.shapeshifter.remove();
 
         }
 

@@ -7,6 +7,8 @@ import com.kryeit.miscellanous.EmergencyCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,19 +41,18 @@ public class Voting implements Listener {
         AmongKryeitors.vote_per_player.put("Skip", 0);
 
 
-        Inventory gui = Bukkit.createInventory(null, 27, ChatColor.GREEN + "Vote");
-
-        ItemStack indicator = new ItemStack(Material.RED_WOOL);
-        gui.setItem(26, indicator);
+        Inventory gui = Bukkit.createInventory(null, 18, ChatColor.GREEN + "Vote");
 
         for (UUID element : PlayersInGame) {
-            ItemStack player_head = new ItemStack(Objects.requireNonNull(Bukkit.getPlayer(element).getInventory().getItem(39)));
+            Player player = Bukkit.getPlayer(element);
+            ItemStack player_head = player.getInventory().getItem(39).clone();
             ItemMeta player_head_meta = player_head.getItemMeta();
             player_head_meta.setDisplayName(Bukkit.getPlayer(element).getName());
             player_head.setItemMeta(player_head_meta);
 
             gui.addItem(player_head);
         }
+
 
         ItemStack skip = new ItemStack(Material.RED_CONCRETE);
         ItemMeta skip_meta = skip.getItemMeta();
@@ -68,45 +69,25 @@ public class Voting implements Listener {
 
     @EventHandler
     public void OnVotingCasted(InventoryClickEvent event) {
-        if (event.getView().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Vote")) {
-            if (event.getClickedInventory() == event.getView().getTopInventory()) {
-                if(event.getSlot()<25) {
-                    if(event.getCurrentItem()!=null) {
-                        if (event.getCurrentItem().equals(Material.RED_CONCRETE)) {
-                            ItemStack new_vote = new ItemStack(Material.LIME_WOOL);
-                            ItemMeta new_vote_meta = new_vote.getItemMeta();
-                            new_vote_meta.setDisplayName(event.getCurrentItem().getItemMeta().getDisplayName());
-                            new_vote.setItemMeta(new_vote_meta);
-
-                            event.getInventory().setItem(26, new_vote);
-                        } else {
-                            ItemStack new_vote = new ItemStack(Material.LIME_WOOL);
-                            ItemMeta new_vote_meta = new_vote.getItemMeta();
-                            new_vote_meta.setDisplayName("Skip vote");
-                            new_vote.setItemMeta(new_vote_meta);
-
-                            event.getInventory().setItem(26, new_vote);
-                        }
-                    }
-                } else if (event.getSlot()==26) {
-                    if (!event.getCurrentItem().getItemMeta().getDisplayName().equals("Skip vote")) {
-                        String chosen_player = event.getCurrentItem().getItemMeta().getDisplayName();
-                        AmongKryeitors.vote_per_player.put(chosen_player, AmongKryeitors.vote_per_player.get(chosen_player) + 1);
-
-                        event.getWhoClicked().closeInventory();
-                        has_voted.add(event.getWhoClicked().getUniqueId());
-                        HasVotingEnded();
-                    } else {
-                        event.getWhoClicked().closeInventory();
-                        AmongKryeitors.vote_per_player.put("Skip", AmongKryeitors.vote_per_player.get("Skip")+1);
-                        has_voted.add(event.getWhoClicked().getUniqueId());
-                        HasVotingEnded();
-                    }
-                }
-
-                event.setCancelled(true);
+        if (!event.getView().getTitle().equalsIgnoreCase(ChatColor.GREEN + "Vote")) return;
+        if (event.getClickedInventory() != event.getView().getTopInventory()) return;
+        ItemStack item = event.getCurrentItem();
+        if(item==null) return;
+        if(item.getType().equals(Material.RED_CONCRETE)) {
+            AmongKryeitors.vote_per_player.put("Skip", AmongKryeitors.vote_per_player.get("Skip") + 1);
+            if(event.getWhoClicked() instanceof Player player) {
+                player.closeInventory();
+                HasVotingEnded();
+            }
+        } else {
+            AmongKryeitors.vote_per_player.put(item.getItemMeta().getDisplayName(), AmongKryeitors.vote_per_player.get(item.getItemMeta().getDisplayName()) + 1);
+            if(event.getWhoClicked() instanceof Player player) {
+                player.closeInventory();
+                HasVotingEnded();
             }
         }
+
+        event.setCancelled(true);
     }
 
     public void HasVotingEnded() {

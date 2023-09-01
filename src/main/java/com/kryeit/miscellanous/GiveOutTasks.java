@@ -126,16 +126,21 @@ public class GiveOutTasks {
         for (Map.Entry<String, String> entry : AmongKryeitors.player_task_list.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
-
         System.out.println(player.getName());
         System.out.println(AmongKryeitors.player_task_list.get(player.getName()));
         if(AmongKryeitors.player_task_list.get(player.getName()).contains(task)) {
             Collection<String> separated_tasks = SeparateTasks(AmongKryeitors.player_task_list.get(player.getName()));
             Iterator<String> iterator = separated_tasks.iterator();
+            boolean found = false;
             while (iterator.hasNext()) {
                 String element = iterator.next();
                 if (element.contains(task)) {
                     iterator.remove();
+                    found = true;
+                    break;
+                }
+                if(found) {
+                    break;
                 }
             }
 

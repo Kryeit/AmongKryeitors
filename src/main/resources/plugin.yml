@@ -2,9 +2,12 @@ name: AmongKryeitors
 version: '${version}'
 main: com.kryeit.AmongKryeitors
 api-version: 1.18
+depend: [GriefDefender]
 commands:
   startgame:
     description: Starts the Among Us game
     permission: amongkryeitors.startgame
   sabotage :
     description: Shows the options of a sabotage
+  vote :
+    description : Opens the vote GUI

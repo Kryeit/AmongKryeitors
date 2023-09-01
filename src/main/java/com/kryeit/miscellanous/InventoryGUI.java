@@ -34,7 +34,7 @@ public class InventoryGUI {
 
                 Bukkit.getPlayer(element).getInventory().setItem(1, new ItemStack(Material.MAP));
 
-                ItemStack imp_actions = new ItemStack(Material.COMPASS);
+                ItemStack imp_actions = new ItemStack(Material.CLOCK);
                 ItemMeta imp_actions_meta = imp_actions.getItemMeta();
                 imp_actions_meta.setDisplayName("Sabotage/Report Body");
                 imp_actions.setItemMeta(imp_actions_meta);
@@ -46,7 +46,7 @@ public class InventoryGUI {
             } else if (AmongKryeitors.shapeshifter.equals(Bukkit.getPlayer(element))) {
                 Bukkit.getPlayer(element).getInventory().setItem(1, new ItemStack(Material.MAP));
 
-                ItemStack imp_actions = new ItemStack(Material.COMPASS);
+                ItemStack imp_actions = new ItemStack(Material.CLOCK);
                 ItemMeta imp_actions_meta = imp_actions.getItemMeta();
                 imp_actions_meta.setDisplayName("Sabotage/Report Body");
                 imp_actions.setItemMeta(imp_actions_meta);

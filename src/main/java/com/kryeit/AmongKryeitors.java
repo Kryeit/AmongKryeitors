@@ -2,6 +2,7 @@ package com.kryeit;
 
 import com.kryeit.command.Sabotage;
 import com.kryeit.command.StartGame;
+import com.kryeit.command.Vote;
 import com.kryeit.events.Voting;
 import com.kryeit.events.onReactorSabotage;
 import com.kryeit.listener.*;
@@ -58,6 +59,7 @@ public final class AmongKryeitors extends JavaPlugin {
     public void registerCommands() {
         getCommand("startgame").setExecutor(new StartGame());
         getCommand("sabotage").setExecutor(new Sabotage());
+        getCommand("vote").setExecutor(new Vote());
     }
 
     public void registerEvents() {

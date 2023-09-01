@@ -41,7 +41,7 @@ public class onTaskDone implements Listener{
             "StTrash","1784 12 -4412",
             "StWiring","1795 10 -4383",
             "AdPower","1783 11 -4377",
-            "AdCard","1755 11 -4373",
+            "AdCard","1764 11 -4382",
             "AdData","1780 11 -4376",
             "MeScan","1812 9 -4374",
             "MeAnomaly","1798 12 -4375",
@@ -77,6 +77,11 @@ public class onTaskDone implements Listener{
                         if(AreAllTAsksDone()) {
                             onCrewmatesWin onCrewmatesWin = new onCrewmatesWin();
                             onCrewmatesWin.OnCrewmatesWin();
+                        }
+                        if(Utils.GetKeyFromValue(tasks,Utils.parseLocation(event.getBlock().getLocation())).equals("AdData")) {
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
+                                    Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + Utils.getClosestPlayer(place).getName() + " book");
                         }
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "title " + Utils.getClosestPlayer(place).getName() + " " +
                                 Utils.getTitleCommandSyntax("TASK COMPLETE!", "dark_green"));
