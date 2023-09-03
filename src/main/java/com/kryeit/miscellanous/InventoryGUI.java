@@ -30,19 +30,6 @@ public class InventoryGUI {
                 report_body.setItemMeta(report_body_meta);
 
                 Bukkit.getPlayer(element).getInventory().setItem(1, report_body);
-            } else if (AmongKryeitors.impostors.contains(element)) {
-
-                Bukkit.getPlayer(element).getInventory().setItem(1, new ItemStack(Material.MAP));
-
-                ItemStack imp_actions = new ItemStack(Material.CLOCK);
-                ItemMeta imp_actions_meta = imp_actions.getItemMeta();
-                imp_actions_meta.setDisplayName("Sabotage/Report Body");
-                imp_actions.setItemMeta(imp_actions_meta);
-
-                Bukkit.getPlayer(element).getInventory().setItem(2, imp_actions);
-
-                ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-                Bukkit.getPlayer(element).getInventory().setItem(0, filler);
             } else if (AmongKryeitors.shapeshifter.equals(Bukkit.getPlayer(element))) {
                 Bukkit.getPlayer(element).getInventory().setItem(1, new ItemStack(Material.MAP));
 
@@ -62,6 +49,20 @@ public class InventoryGUI {
 
                 ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
                 Bukkit.getPlayer(element).getInventory().setItem(0, filler);
+            } else if (AmongKryeitors.impostors.contains(element)) {
+
+                Bukkit.getPlayer(element).getInventory().setItem(1, new ItemStack(Material.MAP));
+
+                ItemStack imp_actions = new ItemStack(Material.CLOCK);
+                ItemMeta imp_actions_meta = imp_actions.getItemMeta();
+                imp_actions_meta.setDisplayName("Sabotage/Report Body");
+                imp_actions.setItemMeta(imp_actions_meta);
+
+                Bukkit.getPlayer(element).getInventory().setItem(2, imp_actions);
+
+                ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+                Bukkit.getPlayer(element).getInventory().setItem(0, filler);
+
             }
         }
 

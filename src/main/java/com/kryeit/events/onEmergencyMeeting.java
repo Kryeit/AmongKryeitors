@@ -3,7 +3,10 @@ package com.kryeit.events;
 import com.kryeit.AmongKryeitors;
 import com.kryeit.Utils;
 import com.kryeit.command.StartGame;
+import com.kryeit.miscellanous.GlobalLocalShapeshiftCooldown;
+import com.kryeit.miscellanous.GlobalShapeshiftTime;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -41,6 +44,8 @@ public class onEmergencyMeeting {
         playersInGame.addAll(AmongKryeitors.crewmates);
         playersInGame.addAll(AmongKryeitors.impostors);
         Collections.shuffle(playersInGame);
+        GlobalShapeshiftTime globalShapeshiftTime = new GlobalShapeshiftTime();
+        globalShapeshiftTime.Come_back();
 
         int index = 0;
         while(index<playersInGame.toArray().length) {
@@ -49,6 +54,9 @@ public class onEmergencyMeeting {
         }
 
         Voting voting = new Voting();
+        for(String element : AmongKryeitors.corpses) {
+            Utils.parseString(element).getBlock().setType(Material.AIR);
+        }
         AmongKryeitors.corpses.clear();
         voting.StartVote();
 

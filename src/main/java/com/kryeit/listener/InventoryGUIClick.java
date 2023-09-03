@@ -5,6 +5,7 @@ import com.kryeit.AmongKryeitors;
 import com.kryeit.events.onBodyReported;
 import com.kryeit.miscellanous.GlobalLocalSabotageCooldown;
 import com.kryeit.miscellanous.GlobalLocalShapeshiftCooldown;
+import com.kryeit.miscellanous.GlobalShapeshiftTime;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -145,12 +146,21 @@ public class InventoryGUIClick implements Listener {
 
     @EventHandler
     public void ShapeshiftClick(InventoryClickEvent event) {
+        if (event.getCurrentItem()==null) return;
         if (event.getView().getTitle().equalsIgnoreCase(ChatColor.GOLD + "Shapeshift")) {
             if (event.getClickedInventory() == event.getView().getTopInventory()) {
+                if(event.getCurrentItem()==null) return;
+                if(event.getCurrentItem()==new ItemStack(Material.LIME_WOOL)) return;
+                if(event.getCurrentItem()==new ItemStack(Material.RED_WOOL)) return;
                 GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
                 if (globalLocalShapeshiftCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
 
+                    AmongKryeitors.old_cap = event.getWhoClicked().getInventory().getItem(39);
+                    GlobalShapeshiftTime globalShapeshiftTime = new GlobalShapeshiftTime();
+                    globalShapeshiftTime.Shapeshifts();
+
                     event.getWhoClicked().getInventory().setItem(39, event.getCurrentItem());
+                    event.getWhoClicked().closeInventory();
                 }
                 event.setCancelled(true);
             }
@@ -176,6 +186,7 @@ public class InventoryGUIClick implements Listener {
 
     @EventHandler
     public void ItemClick(InventoryClickEvent event) {
+        if(event.getCurrentItem()==null) return;
         if (AmongKryeitors.crewmates.contains(event.getWhoClicked().getUniqueId())) {
             switch (Objects.requireNonNull(event.getCurrentItem()).getType()) {
                 case CLOCK:
@@ -206,5 +217,6 @@ public class InventoryGUIClick implements Listener {
 
 
     }
+
 }
 

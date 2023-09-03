@@ -32,7 +32,7 @@ public class VentCheck implements Listener {
     @EventHandler
     public void OnVentClicked (PlayerInteractEvent event) {
 
-
+        if(event.getClickedBlock()==null) return;
         if(vents.contains(Utils.parseLocation(Objects.requireNonNull(event.getClickedBlock()).getLocation()))) {
             if(AmongKryeitors.impostors.contains(event.getPlayer().getUniqueId())) {
 

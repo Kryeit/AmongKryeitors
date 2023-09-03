@@ -20,6 +20,8 @@ public class LightsGUI implements Listener {
 
     @EventHandler
     public void onLightsSabotageTask(PlayerInteractEvent event) {
+        if(event.getClickedBlock()==null) return;
+        if(event.getClickedBlock().getType().equals(Material.AIR)) return;
         if (Utils.parseLocation(Objects.requireNonNull(event.getClickedBlock()).getLocation()).equals("1818 12 -4382") && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             Inventory gui = Bukkit.createInventory(event.getPlayer(), 9, ChatColor.GREEN + "Fix Lights");
 

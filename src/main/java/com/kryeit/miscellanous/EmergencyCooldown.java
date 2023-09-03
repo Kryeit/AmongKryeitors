@@ -7,7 +7,7 @@ public class EmergencyCooldown {
     Long RestartTime;
     public void StartCooldown() {
 
-        Long RestartTime = System.currentTimeMillis();
+        RestartTime = System.currentTimeMillis();
     }
 
     public void CheckCooldown() {

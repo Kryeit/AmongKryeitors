@@ -40,7 +40,7 @@ public class GiveOutTasks {
             "RePin;","Reactor : Sort spectrum",
             "LoTarget;","Lower Engine : Align Target",
             "LoPower;","Lower Engine : Accept Power",
-            "ElPower;","Electrical : Accept Power",
+            "ElPower;","Electrical : Redirect Power",
             "ElWiring;","Electrical : Fix Wiring",
             "CaData;","Cafeteria : Download Data",
             "WeData;","Weapons : Download Data",
@@ -50,15 +50,13 @@ public class GiveOutTasks {
 
     public void DistributeTasks() {
 
-        Map<String,String> tasklist_perplayer = new QuickHash();
-
         List<UUID> PlayersInGame = new ArrayList<>();
         PlayersInGame.addAll(AmongKryeitors.crewmates);
         PlayersInGame.addAll(AmongKryeitors.impostors);
         System.out.println(PlayersInGame.toArray().length);
 
         for (UUID element : PlayersInGame) {
-            String task_set = GenerateTaskSet(primarytask, 14);
+            String task_set = GenerateTaskSet(primarytask, 15);
             String player_name = Bukkit.getPlayer(element).getName();
             AmongKryeitors.player_task_list.put(player_name,task_set);
             Collection<String> separated_tasks = SeparateTasks(task_set);
@@ -108,14 +106,13 @@ public class GiveOutTasks {
 
             if (!task_set_builder.toString().contains(next_task)) {
                 task_set_builder.append(next_task);
+                if (next_task.contains("Data")) {
+                    task_set_builder.append("AdData;");
+                } else if (next_task.contains("StGas")) {
+                    task_set_builder.append("UpGas;StGas;LoGas;");
+                }
+                index++;
             }
-
-            if (next_task.contains("Data")) {
-                task_set_builder.append("AdData;");
-            } else if (next_task.contains("StGas")) {
-                task_set_builder.append("UpGas;StGas;LoGas;");
-            }
-            index++;
         }
 
         return task_set_builder.toString();

@@ -5,6 +5,7 @@ import com.kryeit.Utils;
 import com.kryeit.miscellanous.GiveOutTasks;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
@@ -98,6 +99,8 @@ public class onTaskDone implements Listener{
 
     @EventHandler
     public void OnSpecialTaskDone (PlayerInteractEvent event) {
+        if(event.getItem()==null) return;
+        if(event.getClickedBlock().getType().equals(Material.AIR)) return;
         Location drainLoc = event.getClickedBlock().getLocation();
         String finalDrain = Utils.parseLocation(drainLoc);
 
@@ -135,12 +138,13 @@ public class onTaskDone implements Listener{
 
     @EventHandler
     public void OnBucketFill(PlayerInteractEvent event) {
+        if (event.getItem() == null) return;
+        if(event.getClickedBlock().getType().equals(Material.AIR)) return;
         Location loc = event.getClickedBlock().getLocation();
         String finalDrain = Utils.parseLocation(loc);
 
         if (finalDrain.equals("1795 10 -4398")) {
             ItemStack item = event.getItem();
-            if (item == null) return;
             if (item.toString().equals("ItemStack{BUCKET x 1}")) {
                 GiveOutTasks giveOutTasks = new GiveOutTasks();
                 String place = Utils.parseLocation(event.getClickedBlock().getLocation());
@@ -170,6 +174,8 @@ public class onTaskDone implements Listener{
 
     @EventHandler
     public void OnDataDownloaded (PlayerInteractEvent event) {
+        if(event.getItem()==null) return;
+        if(event.getClickedBlock().getType().equals(Material.AIR)) return;
         Location loc = Objects.requireNonNull(event.getClickedBlock()).getLocation();
         String position = Utils.parseLocation(loc);
 

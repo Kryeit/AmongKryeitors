@@ -2,13 +2,15 @@ package com.kryeit.miscellanous;
 
 import com.kryeit.AmongKryeitors;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
 public class GlobalLocalKillCooldown {
-    private static HashMap<Player, Long> playerTimeMap = new HashMap<>();
-    private static List<Player> playersOver30Seconds = new ArrayList<>();
+    public HashMap<Player, Long> playerTimeMap = new HashMap<>();
+    public List<Player> playersOver30Seconds = new ArrayList<>();
 
     public void gameSetup() {
         System.out.println("PlayerTimeMap setup");
@@ -42,6 +44,7 @@ public class GlobalLocalKillCooldown {
         playerTimeMap.remove(player);
         playerTimeMap.put(player, System.currentTimeMillis());
         playersOver30Seconds.remove(player);
+        player.getInventory().setItem(0, new ItemStack(Material.GRAY_STAINED_GLASS_PANE));
     }
 
     public List<Player> getPlayersOver30Seconds() {

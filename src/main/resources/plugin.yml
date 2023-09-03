@@ -11,3 +11,5 @@ commands:
     description: Shows the options of a sabotage
   vote :
     description : Opens the vote GUI
+  resetgame:
+    description: Resets all variables of the plugin

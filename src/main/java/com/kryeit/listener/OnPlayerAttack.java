@@ -4,12 +4,16 @@ import com.griefdefender.api.Core;
 import com.griefdefender.api.GriefDefender;
 import com.kryeit.AmongKryeitors;
 import com.kryeit.claiming.ClaimUtils;
+import com.kryeit.events.onImpostorsWin;
+import com.kryeit.miscellanous.GlobalLocalKillCooldown;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
@@ -29,7 +33,17 @@ public class OnPlayerAttack implements Listener {
             if(ClaimUtils.isInside(victim) && ClaimUtils.isInside(perpetrator)) {
 
                 if(AmongKryeitors.impostors.contains(perpetrator.getPlayer().getUniqueId())) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill " + victim.getPlayer().getName());
+                    if (!perpetrator.getInventory().getItemInMainHand().equals(new ItemStack(Material.NETHERITE_SWORD)))
+                        return;
+                    if (perpetrator.getInventory().getItemInMainHand().equals(Material.NETHERITE_SWORD)) {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill " + victim.getPlayer().getName());
+                        GlobalLocalKillCooldown globalLocalKillCooldown = new GlobalLocalKillCooldown();
+                        globalLocalKillCooldown.resetPlayerTime(perpetrator);
+
+                        onImpostorsWin onImpostorsWin = new onImpostorsWin();
+                        onImpostorsWin.doImpostorsWin();
+
+                    }
                 }
 
                 if(false) {

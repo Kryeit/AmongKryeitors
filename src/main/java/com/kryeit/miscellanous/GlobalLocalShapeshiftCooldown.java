@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class GlobalLocalShapeshiftCooldown {
-    private static HashMap<Player, Long> playerTimeMap = new HashMap<>();
-    private static List<Player> playersOver30Seconds = new ArrayList<>();
+    public HashMap<Player, Long> playerTimeMap = new HashMap<>();
+    public List<Player> playersOver30Seconds = new ArrayList<>();
 
     public void gameSetup() {
         System.out.println("PlayerTimeMap setup");

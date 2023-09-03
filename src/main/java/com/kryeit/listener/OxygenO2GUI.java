@@ -25,6 +25,8 @@ public class OxygenO2GUI implements Listener {
 
     @EventHandler
     public void onOxygenTask(PlayerInteractEvent event) {
+        if(event.getClickedBlock()==null) return;
+        if(event.getClickedBlock().getType().equals(Material.AIR)) return;
         if (AmongKryeitors.is_otwo_sabotaged) {
             if (pins.contains(Utils.parseLocation(Objects.requireNonNull(event.getClickedBlock()).getLocation()))) {
                 if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {

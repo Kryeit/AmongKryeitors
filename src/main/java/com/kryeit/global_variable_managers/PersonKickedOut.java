@@ -14,9 +14,9 @@ public class PersonKickedOut {
             AmongKryeitors.impostors.remove(player.getUniqueId());
         }
 
-        if(AmongKryeitors.engineer.equals(player)) {
+        if(AmongKryeitors.engineer.equals(player) && AmongKryeitors.engineer!=null) {
             AmongKryeitors.engineer.remove();
-        } else if (AmongKryeitors.shapeshifter.equals(player)) {
+        } else if (AmongKryeitors.shapeshifter.equals(player) && AmongKryeitors.shapeshifter!=null) {
             AmongKryeitors.shapeshifter.remove();
 
         }

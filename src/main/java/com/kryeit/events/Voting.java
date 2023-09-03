@@ -34,6 +34,7 @@ public class Voting implements Listener {
         PlayersInGame.addAll(AmongKryeitors.crewmates);
         PlayersInGame.addAll(AmongKryeitors.impostors);
         Collections.shuffle(PlayersInGame);
+        AmongKryeitors.vote_per_player.clear();
 
         for(UUID element : PlayersInGame) {
             AmongKryeitors.vote_per_player.put(Bukkit.getPlayer(element).getName(),0);
@@ -130,8 +131,15 @@ public class Voting implements Listener {
                 }
             }
 
+            onImpostorsWin onImpostorsWin = new onImpostorsWin();
+            onImpostorsWin.doImpostorsWin();
+            onCrewmatesWin onCrewmatesWin = new onCrewmatesWin();
+            onCrewmatesWin.doCrewmatesWin();
+
             EmergencyCooldown emergencyCooldown = new EmergencyCooldown();
             emergencyCooldown.StartCooldown();
+            AmongKryeitors.vote_per_player.clear();
+            has_voted.clear();
         }
     }
 

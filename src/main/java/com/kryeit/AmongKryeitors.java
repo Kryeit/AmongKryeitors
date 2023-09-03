@@ -1,5 +1,6 @@
 package com.kryeit;
 
+import com.kryeit.command.Reset;
 import com.kryeit.command.Sabotage;
 import com.kryeit.command.StartGame;
 import com.kryeit.command.Vote;
@@ -42,6 +43,12 @@ public final class AmongKryeitors extends JavaPlugin {
     public static Map<String,String> player_task_list = new HashMap<>();
     public static Map<String,Integer> vote_per_player = new HashMap<>();
 
+    public static boolean has_shapeshifted = false;
+
+    public static ItemStack old_cap;
+
+    public static Long old_shapeshift_time = 0L;
+
 
     @Override
     public void onEnable() {
@@ -60,6 +67,7 @@ public final class AmongKryeitors extends JavaPlugin {
         getCommand("startgame").setExecutor(new StartGame());
         getCommand("sabotage").setExecutor(new Sabotage());
         getCommand("vote").setExecutor(new Vote());
+        getCommand("resetgame").setExecutor(new Reset());
     }
 
     public void registerEvents() {
