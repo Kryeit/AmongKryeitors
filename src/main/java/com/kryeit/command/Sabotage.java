@@ -1,7 +1,5 @@
 package com.kryeit.command;
 
-import com.kryeit.AmongKryeitors;
-import com.kryeit.claiming.ClaimUtils;
 import com.kryeit.miscellanous.GlobalLocalSabotageCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,15 +8,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 public class Sabotage implements CommandExecutor {
 
     @Override
@@ -53,9 +49,9 @@ public class Sabotage implements CommandExecutor {
             report.setItemMeta(report_meta);
 
             GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
-            List<Player> players = globalLocalSabotageCooldown.getPlayersOver30Seconds();
+            List<Player> players = globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage();
             if (players != null) {
-                if (globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(sender)) {
+                if (globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage().contains(sender)) {
                     cooldown.setType(Material.LIME_WOOL);
                 } else {
                     cooldown.setType(Material.RED_WOOL);
@@ -70,7 +66,7 @@ public class Sabotage implements CommandExecutor {
             Plugin plugin = Bukkit.getPluginManager().getPlugin("AmongKryeitors");
             int taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
                 Player playerWhoOpenedGUI = ((Player) sender).getPlayer(); // Get the player who opened the GUI
-                List<Player> playersOver30Seconds = globalLocalSabotageCooldown.getPlayersOver30Seconds();
+                List<Player> playersOver30Seconds = globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage();
 
                 if (playersOver30Seconds != null && playersOver30Seconds.contains(playerWhoOpenedGUI)) {
                     // The player who opened the GUI is in the list

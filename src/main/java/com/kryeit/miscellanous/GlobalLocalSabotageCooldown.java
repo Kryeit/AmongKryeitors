@@ -7,45 +7,47 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class GlobalLocalSabotageCooldown {
-    public HashMap<Player, Long> playerTimeMap = new HashMap<>();
-    public List<Player> playersOver30Seconds = new ArrayList<>();
 
     public void gameSetup() {
         System.out.println("PlayerTimeMap setup");
 
-        // Clear the existing data when setting up the game
-        playerTimeMap.clear();
-        playersOver30Seconds.clear();
-
         for (UUID playerId : AmongKryeitors.impostors) {
             Player player = Bukkit.getPlayer(playerId);
             if (player != null) {
-                playerTimeMap.put(player, System.currentTimeMillis());
+                AmongKryeitors.playerTimeMapSabotage.put(player, System.currentTimeMillis());
             }
         }
     }
 
     public void updatePlayerTime(Player player) {
+        for(Map.Entry<Player, Long> entry : AmongKryeitors.playerTimeMapSabotage.entrySet()) {
+            System.out.println(entry.getKey().toString() + " " + entry.getValue() + toString());
+        }
         long currentTime = System.currentTimeMillis();
-        long elapsedTime = currentTime - playerTimeMap.getOrDefault(player, currentTime);
+        long elapsedTime = currentTime - AmongKryeitors.playerTimeMapSabotage.get(player);
 
         if (elapsedTime >= 30000) {
-            if (!playersOver30Seconds.contains(player)) {
-                playersOver30Seconds.add(player);
+            if (!AmongKryeitors.playersOver30SecondsSabotage.contains(player)) {
+                AmongKryeitors.playersOver30SecondsSabotage.add(player);
             }
         }
+        System.out.println("Player Time Sabotage Updated");
 
     }
 
     public void resetPlayerTime(Player player) {
         System.out.println("Player time reset");
-        playerTimeMap.remove(player);
-        playerTimeMap.put(player, System.currentTimeMillis());
-        playersOver30Seconds.remove(player);
+        AmongKryeitors.playerTimeMapSabotage.remove(player);
+        AmongKryeitors.playerTimeMapSabotage.put(player, System.currentTimeMillis());
+        AmongKryeitors.playersOver30SecondsSabotage.remove(player);
     }
 
-    public List<Player> getPlayersOver30Seconds() {
+    public List<Player> getPlayersOver30SecondsSabotage() {
         // Ensure playersOver30Seconds is not null before returning
-        return playersOver30Seconds != null ? playersOver30Seconds : new ArrayList<>();
+        return AmongKryeitors.playersOver30SecondsSabotage != null ? AmongKryeitors.playersOver30SecondsSabotage : new ArrayList<>();
+    }
+    public void ResetCooldown() {
+        AmongKryeitors.playersOver30SecondsSabotage.clear();
+        AmongKryeitors.playerTimeMapSabotage.clear();
     }
 }

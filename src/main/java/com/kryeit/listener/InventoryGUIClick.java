@@ -13,13 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +28,13 @@ import java.util.UUID;
 
 public class InventoryGUIClick implements Listener {
 
+    private static BukkitTask taskId;
+    private static BukkitTask taskId_two;
+
 
     @EventHandler
     public void onInventoryGUIClick(PlayerInteractEvent event) {
-        if (event.getItem() != null) {
+            if(event.getItem()==null) return;
 
             String item = Objects.requireNonNull(event.getItem()).toString();
 
@@ -69,9 +72,9 @@ public class InventoryGUIClick implements Listener {
                 report.setItemMeta(report_meta);
 
                 GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
-                List<Player> players = globalLocalSabotageCooldown.getPlayersOver30Seconds();
+                List<Player> players = globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage();
                 if (players != null) {
-                    if (globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(sender)) {
+                    if (globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage().contains(sender)) {
                         cooldown.setType(Material.LIME_WOOL);
                     } else {
                         cooldown.setType(Material.RED_WOOL);
@@ -84,9 +87,9 @@ public class InventoryGUIClick implements Listener {
                 player.openInventory(gui);
 
                 Plugin plugin = Bukkit.getPluginManager().getPlugin("AmongKryeitors");
-                int taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-                    Player playerWhoOpenedGUI = ((Player) sender).getPlayer(); // Get the player who opened the GUI
-                    List<Player> playersOver30Seconds = globalLocalSabotageCooldown.getPlayersOver30Seconds();
+                taskId = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                    Player playerWhoOpenedGUI = event.getPlayer(); // Get the player who opened the GUI
+                    List<Player> playersOver30Seconds = globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage();
 
                     if (playersOver30Seconds != null && playersOver30Seconds.contains(playerWhoOpenedGUI)) {
                         // The player who opened the GUI is in the list
@@ -95,7 +98,7 @@ public class InventoryGUIClick implements Listener {
                         int slotIndex = 8; // 9th slot index (0-based)
                         gui.setItem(slotIndex, new ItemStack(Material.LIME_WOOL));
                     } else {
-                        globalLocalSabotageCooldown.updatePlayerTime(((Player) sender).getPlayer());
+                        globalLocalSabotageCooldown.updatePlayerTime(event.getPlayer());
                     }
                 }, 0, 20); // Execute every 1 second (20 ticks)
             } else if (item.contains("ItemStack{PLAYER_HEAD x 1")) {
@@ -124,23 +127,25 @@ public class InventoryGUIClick implements Listener {
                 player.openInventory(gui);
 
                 Plugin plugin = Bukkit.getPluginManager().getPlugin("AmongKryeitors");
-                int taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+                taskId_two = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
                     Player playerWhoOpenedGUI = event.getPlayer(); // Get the player who opened the GUI
-                    List<Player> playersOver30Seconds = globalLocalShapeshiftCooldown.getPlayersOver30Seconds();
+                    List<Player> playersOver30Seconds = globalLocalShapeshiftCooldown.getPlayersOver30SecondsShapeshift();
 
                     if (playersOver30Seconds != null && playersOver30Seconds.contains(playerWhoOpenedGUI)) {
                         // The player who opened the GUI is in the list
                         // Now you can change the material of the 9th slot to Material.GREEN_WOOL
-
+                        System.out.println("wya");
                         int slotIndex = 17; // 9th slot index (0-based)
                         gui.setItem(slotIndex, new ItemStack(Material.LIME_WOOL));
                     } else {
+                        System.out.println(playerWhoOpenedGUI.getName());
                         globalLocalShapeshiftCooldown.updatePlayerTime(playerWhoOpenedGUI); // Use the playerWhoOpenedGUI
+
+                        System.out.println("shit");
                     }
-                }, 0L, 20); // Replace 0L and 20L with your desired delay and period
+                }, 0, 20); // Replace 0L and 20L with your desired delay and period
 
             }
-        }
 
     }
 
@@ -153,7 +158,7 @@ public class InventoryGUIClick implements Listener {
                 if(event.getCurrentItem()==new ItemStack(Material.LIME_WOOL)) return;
                 if(event.getCurrentItem()==new ItemStack(Material.RED_WOOL)) return;
                 GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
-                if (globalLocalShapeshiftCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                if (globalLocalShapeshiftCooldown.getPlayersOver30SecondsShapeshift().contains(event.getWhoClicked())) {
 
                     AmongKryeitors.old_cap = event.getWhoClicked().getInventory().getItem(39);
                     GlobalShapeshiftTime globalShapeshiftTime = new GlobalShapeshiftTime();

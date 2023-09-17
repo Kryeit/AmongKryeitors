@@ -11,9 +11,8 @@ public class EmergencyCooldown {
     }
 
     public void CheckCooldown() {
-        Long updatedTime = System.currentTimeMillis() - RestartTime;
+        long updatedTime = System.currentTimeMillis() - RestartTime;
         if(updatedTime >= 30000) {
-            onEmergencyMeeting onEmergencyMeeting = new onEmergencyMeeting();
             onEmergencyMeeting.OnEmergencyMeeting(false);
         }
     }

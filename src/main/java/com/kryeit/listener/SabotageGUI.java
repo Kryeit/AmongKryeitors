@@ -1,10 +1,8 @@
 package com.kryeit.listener;
 
-import com.kryeit.Utils;
 import com.kryeit.events.onOxygenSabotage;
 import com.kryeit.events.onReactorSabotage;
 import com.kryeit.miscellanous.GlobalLocalSabotageCooldown;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +24,7 @@ public class SabotageGUI implements Listener {
 
                 switch (event.getCurrentItem().getType()) {
                     case BEACON:
-                        if(globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                        if(globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage().contains(event.getWhoClicked())) {
                             player.closeInventory();
                             onReactorSabotage OnReactorSabotage = new onReactorSabotage();
                             OnReactorSabotage.OnReactorSabotage(player);
@@ -34,7 +32,7 @@ public class SabotageGUI implements Listener {
                         }
                         break;
                     case REDSTONE_LAMP:
-                        if(globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                        if(globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage().contains(event.getWhoClicked())) {
                             player.closeInventory();
                             onLightsSabotage.OnLightsSabotage(player);
                         }
@@ -42,7 +40,7 @@ public class SabotageGUI implements Listener {
 
                         break;
                     case GLASS:
-                        if(globalLocalSabotageCooldown.getPlayersOver30Seconds().contains(event.getWhoClicked())) {
+                        if(globalLocalSabotageCooldown.getPlayersOver30SecondsSabotage().contains(event.getWhoClicked())) {
                             player.closeInventory();
                             onOxygenSabotage oxygenSabotage = new onOxygenSabotage();
                             oxygenSabotage.OnOxygenSabotage(player);

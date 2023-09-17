@@ -49,6 +49,14 @@ public final class AmongKryeitors extends JavaPlugin {
 
     public static Long old_shapeshift_time = 0L;
 
+    public static HashMap<Player, Long> playerTimeMapShapeshift = new HashMap<>();
+    public static List<Player> playersOver30SecondsShapeshift = new ArrayList<>();
+
+    public static HashMap<Player, Long> playerTimeMapSabotage = new HashMap<>();
+    public static List<Player> playersOver30SecondsSabotage = new ArrayList<>();
+    public static HashMap<Player, Long> playerTimeMapKill = new HashMap<>();
+    public static List<Player> playersOver30SecondsKill = new ArrayList<>();
+
 
     @Override
     public void onEnable() {

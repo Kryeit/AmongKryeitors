@@ -39,16 +39,13 @@ public class ResetGame {
 
         AmongKryeitors.old_shapeshift_time = 0L;
         GlobalLocalKillCooldown globalLocalKillCooldown = new GlobalLocalKillCooldown();
-        globalLocalKillCooldown.playerTimeMap.clear();
-        globalLocalKillCooldown.playersOver30Seconds.clear();
+        globalLocalKillCooldown.ResetCooldown();
 
         GlobalLocalSabotageCooldown globalLocalSabotageCooldown = new GlobalLocalSabotageCooldown();
-        globalLocalSabotageCooldown.playerTimeMap.clear();
-        globalLocalKillCooldown.playersOver30Seconds.clear();
+        globalLocalSabotageCooldown.ResetCooldown();
 
         GlobalLocalShapeshiftCooldown globalLocalShapeshiftCooldown = new GlobalLocalShapeshiftCooldown();
-        globalLocalShapeshiftCooldown.playerTimeMap.clear();
-        globalLocalShapeshiftCooldown.playersOver30Seconds.clear();
+        globalLocalShapeshiftCooldown.ResetCooldown();
     }
 
 }

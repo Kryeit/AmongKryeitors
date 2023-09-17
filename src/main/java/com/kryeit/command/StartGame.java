@@ -26,13 +26,14 @@ public class StartGame implements CommandExecutor {
             if (ClaimUtils.isInside(p)) playersInGame.add(p);
         }
 
-        if (playersInGame.size() < 3) {
+        if (playersInGame.size() < 2) {
             for(Player element : playersInGame) {
+                AmongKryeitors.impostors.add(element.getUniqueId());
+                System.out.println(AmongKryeitors.impostors);
                 AmongKryeitors.crewmates.add(element.getUniqueId());
-                System.out.println(AmongKryeitors.crewmates);
             }
         }
-        if (playersInGame.size() <= 4) {
+        if (playersInGame.size() <= 3) {
             impostorAmount = 1;
         } else if (playersInGame.size() <= 8) {
             impostorAmount = 2;
