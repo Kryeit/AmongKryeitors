@@ -1,29 +1,40 @@
 plugins {
-    id 'java'
+    id 'fabric-loom' version '1.5.+'
+    id 'maven-publish'
 }
 
-group = 'com'
+group = 'com.kryeit'
 version = '1.0'
 
 repositories {
     mavenCentral()
     maven {
-        name = "spigotmc-repo"
-        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        name = 'LuckPerms'
+        url = 'https://oss.sonatype.org/content/repositories/snapshots'
     }
     maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
-    maven {
-        name = 'griefdefender'
+        name = 'GriefDefender'
         url = 'https://repo.glaremasters.me/repository/bloodshot'
     }
+    maven { url 'https://jitpack.io' }
+    maven { url = 'https://maven.nucleoid.xyz/' }
+
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT"
-    compileOnly "com.griefdefender:api:2.1.0-20220122.032038-5"
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    include(modImplementation("me.lucko:fabric-permissions-api:${luckperms_version}"))
+    compileOnly "com.griefdefender:api:${griefdefender_version}"
+
+    modImplementation 'xyz.nucleoid:plasmid:0.5.101+1.20.1'
+
 }
 
 def targetJavaVersion = 17
@@ -36,17 +47,15 @@ java {
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
-    }
-}
-
 processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+                "minecraft_version": project.minecraft_version,
+                "loader_version": project.loader_version
     }
 }

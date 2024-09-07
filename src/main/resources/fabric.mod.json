@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "amongkryeitors",
+  "version": "${version}",
+  "name": "Among Kryeitors",
+  "description": "",
+  "authors": [
+    "MuriPlz",
+    "__Tesseract"
+  ],
+  "contact": {
+    "repo": "https://github.com/Kryeit/AmongKryeitors"
+  },
+  "license": "MIT",
+  "icon": "assets/amongkryeitors/icon.jpg",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "com.kryeit.AmongKryeitors"
+    ]
+  },
+  "mixins": [
+    "amongkryeitors.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "1.20.x",
+    "votifier": "*",
+    "griefdefender": "*"
+  }
+}
